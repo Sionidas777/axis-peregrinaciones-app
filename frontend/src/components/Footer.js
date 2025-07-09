@@ -16,7 +16,7 @@ const Footer = () => {
             </div>
             <p className="text-blue-100 text-sm">
               Acompañando peregrinos en su camino espiritual hacia los lugares más sagrados del mundo. 
-              Experiencias transformadoras que nutren el alma.
+              Tu compañero virtual de peregrinación para experiencias transformadoras que nutren el alma.
             </p>
           </div>
 
