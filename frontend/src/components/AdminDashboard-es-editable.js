@@ -22,6 +22,7 @@ import { mockPilgrimageGroups, mockItineraries, mockDestinations } from '../mock
 import EditGroupModal from './EditGroupModal';
 import EditItineraryModal from './EditItineraryModal';
 import EditDestinationModal from './EditDestinationModal';
+import Footer from './Footer';
 
 const AdminDashboard = ({ user, onLogout }) => {
   const [activeTab, setActiveTab] = useState('resumen');
