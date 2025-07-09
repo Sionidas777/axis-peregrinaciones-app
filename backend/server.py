@@ -240,7 +240,7 @@ async def update_destination_endpoint(destination_id: str, destination_data: Des
     return destination
 
 @api_router.delete("/destinations/{destination_id}")
-async def delete_destination(destination_id: str, current_user: User = Depends(get_current_admin)):
+async def delete_destination_endpoint(destination_id: str, current_user: User = Depends(get_current_admin)):
     """Delete destination (admin only)"""
     success = await delete_destination(destination_id)
     if not success:
