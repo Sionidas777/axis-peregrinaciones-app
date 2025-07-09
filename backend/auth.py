@@ -55,7 +55,7 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     token_data = verify_token(token)
     
     # Import here to avoid circular import
-    from database import get_user_by_email
+    from .database import get_user_by_email
     user = await get_user_by_email(token_data.email)
     if user is None:
         raise HTTPException(
