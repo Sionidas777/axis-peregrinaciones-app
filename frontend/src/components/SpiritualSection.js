@@ -79,26 +79,26 @@ const SpiritualSection = ({ prayers }) => {
             <CardContent className="p-6 space-y-4">
               {Object.entries(prayers.liturgy_of_hours.prayers).map(([key, prayer]) => (
                 <Card key={key} className="border shadow-md">
-                  <CollapsibleTrigger asChild>
-                    <CardHeader 
-                      className="cursor-pointer hover:bg-gray-50 transition-colors"
-                      onClick={() => togglePrayer(key)}
-                    >
-                      <CardTitle className="flex items-center justify-between text-lg">
-                        <div className="flex items-center gap-2">
-                          {key === 'lauds' && <Sun className="w-5 h-5 text-yellow-600" />}
-                          {key === 'vespers' && <Moon className="w-5 h-5 text-blue-600" />}
-                          {key === 'compline' && <Star className="w-5 h-5 text-purple-600" />}
-                          {prayer.title}
-                        </div>
-                        {expandedPrayer === key ? 
-                          <ChevronUp className="w-5 h-5" /> : 
-                          <ChevronDown className="w-5 h-5" />
-                        }
-                      </CardTitle>
-                    </CardHeader>
-                  </CollapsibleTrigger>
                   <Collapsible open={expandedPrayer === key}>
+                    <CollapsibleTrigger asChild>
+                      <CardHeader 
+                        className="cursor-pointer hover:bg-gray-50 transition-colors"
+                        onClick={() => togglePrayer(key)}
+                      >
+                        <CardTitle className="flex items-center justify-between text-lg">
+                          <div className="flex items-center gap-2">
+                            {key === 'lauds' && <Sun className="w-5 h-5 text-yellow-600" />}
+                            {key === 'vespers' && <Moon className="w-5 h-5 text-blue-600" />}
+                            {key === 'compline' && <Star className="w-5 h-5 text-purple-600" />}
+                            {prayer.title}
+                          </div>
+                          {expandedPrayer === key ? 
+                            <ChevronUp className="w-5 h-5" /> : 
+                            <ChevronDown className="w-5 h-5" />
+                          }
+                        </CardTitle>
+                      </CardHeader>
+                    </CollapsibleTrigger>
                     <CollapsibleContent>
                       <CardContent className="pt-0">
                         <div className="bg-gray-50 p-4 rounded-lg">
