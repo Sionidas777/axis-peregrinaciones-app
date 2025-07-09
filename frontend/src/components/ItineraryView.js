@@ -145,29 +145,29 @@ const ItineraryView = ({ itinerary }) => {
         
         {itinerary.dailySchedule.map((day) => (
           <Card key={day.day} className="bg-white/95 backdrop-blur-sm shadow-xl">
-            <CollapsibleTrigger asChild>
-              <CardHeader 
-                className="cursor-pointer hover:bg-gray-50 transition-colors"
-                onClick={() => toggleDay(day.day)}
-              >
-                <CardTitle className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Badge variant="outline" className="text-blue-600 border-blue-600">
-                      Day {day.day}
-                    </Badge>
-                    <div>
-                      <h4 className="text-lg font-semibold">{day.title}</h4>
-                      <p className="text-sm text-gray-600">{day.date}</p>
-                    </div>
-                  </div>
-                  {expandedDay === day.day ? 
-                    <ChevronUp className="w-5 h-5" /> : 
-                    <ChevronDown className="w-5 h-5" />
-                  }
-                </CardTitle>
-              </CardHeader>
-            </CollapsibleTrigger>
             <Collapsible open={expandedDay === day.day}>
+              <CollapsibleTrigger asChild>
+                <CardHeader 
+                  className="cursor-pointer hover:bg-gray-50 transition-colors"
+                  onClick={() => toggleDay(day.day)}
+                >
+                  <CardTitle className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Badge variant="outline" className="text-blue-600 border-blue-600">
+                        Day {day.day}
+                      </Badge>
+                      <div>
+                        <h4 className="text-lg font-semibold">{day.title}</h4>
+                        <p className="text-sm text-gray-600">{day.date}</p>
+                      </div>
+                    </div>
+                    {expandedDay === day.day ? 
+                      <ChevronUp className="w-5 h-5" /> : 
+                      <ChevronDown className="w-5 h-5" />
+                    }
+                  </CardTitle>
+                </CardHeader>
+              </CollapsibleTrigger>
               <CollapsibleContent>
                 <CardContent className="pt-0 space-y-4">
                   {/* Activities */}
