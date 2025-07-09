@@ -4,7 +4,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from fastapi import HTTPException, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from models import User, UserRole, TokenData
+from .models import User, UserRole, TokenData
 import os
 
 # Security configuration
