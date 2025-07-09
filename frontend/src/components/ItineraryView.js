@@ -30,21 +30,21 @@ const ItineraryView = ({ itinerary }) => {
     <div className="space-y-6">
       {/* Flight Information */}
       <Card className="bg-white/95 backdrop-blur-sm shadow-xl">
-        <CollapsibleTrigger asChild>
-          <CardHeader 
-            className="cursor-pointer hover:bg-gray-50 transition-colors"
-            onClick={() => setShowFlights(!showFlights)}
-          >
-            <CardTitle className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Plane className="w-5 h-5 text-blue-600" />
-                Flight Information
-              </div>
-              {showFlights ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-            </CardTitle>
-          </CardHeader>
-        </CollapsibleTrigger>
         <Collapsible open={showFlights}>
+          <CollapsibleTrigger asChild>
+            <CardHeader 
+              className="cursor-pointer hover:bg-gray-50 transition-colors"
+              onClick={() => setShowFlights(!showFlights)}
+            >
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Plane className="w-5 h-5 text-blue-600" />
+                  Flight Information
+                </div>
+                {showFlights ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+              </CardTitle>
+            </CardHeader>
+          </CollapsibleTrigger>
           <CollapsibleContent>
             <CardContent className="pt-0">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
