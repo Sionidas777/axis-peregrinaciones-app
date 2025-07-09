@@ -229,7 +229,7 @@ async def create_destination_endpoint(destination_data: DestinationCreate, curre
     return await create_destination(destination_data)
 
 @api_router.put("/destinations/{destination_id}", response_model=Destination)
-async def update_destination(destination_id: str, destination_data: DestinationUpdate, current_user: User = Depends(get_current_admin)):
+async def update_destination_endpoint(destination_id: str, destination_data: DestinationUpdate, current_user: User = Depends(get_current_admin)):
     """Update destination (admin only)"""
     destination = await update_destination(destination_id, destination_data)
     if not destination:
