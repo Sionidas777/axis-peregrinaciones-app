@@ -588,6 +588,9 @@ const AdminDashboard = ({ user, onLogout }) => {
         </Tabs>
       </main>
 
+      {/* Footer */}
+      <Footer />
+
       {/* Edit Modals */}
       <EditGroupModal
         group={editGroupModal.group}
