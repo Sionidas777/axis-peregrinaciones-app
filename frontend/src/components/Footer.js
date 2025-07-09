@@ -67,7 +67,7 @@ const Footer = () => {
         <div className="border-t border-blue-500 mt-8 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-sm text-blue-100">
-              © 2025 Axis Peregrinaciones. Todos los derechos reservados.
+              © 2025 Axis Peregrinaciones. Tu compañero virtual de peregrinación.
             </p>
             <div className="flex items-center space-x-4 text-xs text-blue-200">
               <span>Operador turístico especializado en peregrinaciones</span>
