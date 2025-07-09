@@ -82,6 +82,11 @@ const Login = ({ onLogin }) => {
               </form>
               <div className="text-xs text-gray-500 text-center">
                 Credenciales de demo: peregrino@email.com / password
+                <div className="mt-2 pt-2 border-t border-gray-200">
+                  <p className="text-xs text-gray-400">
+                    © 2025 Axis Peregrinaciones - Guiando almas en su camino espiritual
+                  </p>
+                </div>
               </div>
             </TabsContent>
             
