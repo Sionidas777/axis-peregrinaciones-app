@@ -88,6 +88,11 @@ const Login = () => {
             <p>Credenciales de prueba:</p>
             <p><strong>Admin:</strong> admin@pilgrimageapp.com / admin123</p>
             <p><strong>Peregrino:</strong> maria@email.com / password</p>
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <p className="text-xs text-gray-400">
+                © 2025 Axis Peregrinaciones - Guiando almas en su camino espiritual
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
