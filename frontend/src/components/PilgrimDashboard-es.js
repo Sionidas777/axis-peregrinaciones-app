@@ -107,6 +107,9 @@ const PilgrimDashboard = ({ user, onLogout }) => {
           </TabsContent>
         </Tabs>
       </main>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
