@@ -180,12 +180,12 @@ async def get_itinerary_by_group(group_id: str, current_user: User = Depends(get
     return itinerary
 
 @api_router.post("/itineraries", response_model=Itinerary)
-async def create_itinerary(itinerary_data: ItineraryCreate, current_user: User = Depends(get_current_admin)):
+async def create_itinerary_endpoint(itinerary_data: ItineraryCreate, current_user: User = Depends(get_current_admin)):
     """Create new itinerary (admin only)"""
     return await create_itinerary(itinerary_data)
 
 @api_router.put("/itineraries/{itinerary_id}", response_model=Itinerary)
-async def update_itinerary(itinerary_id: str, itinerary_data: ItineraryUpdate, current_user: User = Depends(get_current_admin)):
+async def update_itinerary_endpoint(itinerary_id: str, itinerary_data: ItineraryUpdate, current_user: User = Depends(get_current_admin)):
     """Update itinerary (admin only)"""
     itinerary = await update_itinerary(itinerary_id, itinerary_data)
     if not itinerary:
@@ -196,7 +196,7 @@ async def update_itinerary(itinerary_id: str, itinerary_data: ItineraryUpdate, c
     return itinerary
 
 @api_router.delete("/itineraries/{itinerary_id}")
-async def delete_itinerary(itinerary_id: str, current_user: User = Depends(get_current_admin)):
+async def delete_itinerary_endpoint(itinerary_id: str, current_user: User = Depends(get_current_admin)):
     """Delete itinerary (admin only)"""
     success = await delete_itinerary(itinerary_id)
     if not success:
