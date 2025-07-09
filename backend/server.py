@@ -8,9 +8,9 @@ from pathlib import Path
 from typing import List
 
 # Import our models and database functions
-from models import *
-from database import *
-from auth import *
+from .models import *
+from .database import *
+from .auth import *
 
 ROOT_DIR = Path(__file__).parent
 
