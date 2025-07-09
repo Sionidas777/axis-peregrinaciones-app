@@ -257,17 +257,17 @@ async def get_all_spiritual_content_endpoint():
     return await get_all_spiritual_content()
 
 @api_router.get("/spiritual-content/category/{category}", response_model=List[SpiritualContent])
-async def get_spiritual_content_by_category(category: str):
+async def get_spiritual_content_by_category_endpoint(category: str):
     """Get spiritual content by category (public)"""
     return await get_spiritual_content_by_category(category)
 
 @api_router.post("/spiritual-content", response_model=SpiritualContent)
-async def create_spiritual_content(content_data: SpiritualContentCreate, current_user: User = Depends(get_current_admin)):
+async def create_spiritual_content_endpoint(content_data: SpiritualContentCreate, current_user: User = Depends(get_current_admin)):
     """Create new spiritual content (admin only)"""
     return await create_spiritual_content(content_data)
 
 @api_router.put("/spiritual-content/{content_id}", response_model=SpiritualContent)
-async def update_spiritual_content(content_id: str, content_data: SpiritualContentUpdate, current_user: User = Depends(get_current_admin)):
+async def update_spiritual_content_endpoint(content_id: str, content_data: SpiritualContentUpdate, current_user: User = Depends(get_current_admin)):
     """Update spiritual content (admin only)"""
     content = await update_spiritual_content(content_id, content_data)
     if not content:
@@ -278,7 +278,7 @@ async def update_spiritual_content(content_id: str, content_data: SpiritualConte
     return content
 
 @api_router.delete("/spiritual-content/{content_id}")
-async def delete_spiritual_content(content_id: str, current_user: User = Depends(get_current_admin)):
+async def delete_spiritual_content_endpoint(content_id: str, current_user: User = Depends(get_current_admin)):
     """Delete spiritual content (admin only)"""
     success = await delete_spiritual_content(content_id)
     if not success:
