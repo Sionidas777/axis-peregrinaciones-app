@@ -157,7 +157,7 @@ async def delete_group(group_id: str, current_user: User = Depends(get_current_a
 
 # Itinerary endpoints
 @api_router.get("/itineraries", response_model=List[Itinerary])
-async def get_all_itineraries(current_user: User = Depends(get_current_admin)):
+async def get_all_itineraries_endpoint(current_user: User = Depends(get_current_admin)):
     """Get all itineraries (admin only)"""
     return await get_all_itineraries()
 
