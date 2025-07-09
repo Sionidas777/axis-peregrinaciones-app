@@ -293,12 +293,12 @@ async def initialize_database():
     await groups_collection.insert_one(group.dict())
     
     # Update group with pilgrim info
-    await add_pilgrim_to_group(group.id, PilgrimInfo(
+    await add_pilgrim_to_group("group_001", PilgrimInfo(
         id="p1",
         name="Maria Santos",
         email="maria@email.com"
     ))
-    await add_pilgrim_to_group(group.id, PilgrimInfo(
+    await add_pilgrim_to_group("group_001", PilgrimInfo(
         id="p2",
         name="John Rodriguez",
         email="john@email.com"
