@@ -246,6 +246,6 @@ agent_communication:
   - agent: "testing"
     message: "He verificado todos los endpoints solicitados y corregido los problemas encontrados. El health check, login, grupos, destinos y contenido espiritual funcionan correctamente. Los problemas de recursión en los endpoints de destinos y contenido espiritual han sido solucionados."
   - agent: "testing"
-    message: "He probado la integración del frontend con la API real. El login de peregrino funciona correctamente y muestra el dashboard con los datos correctos (nombre de usuario, grupo, pestañas). El login de administrador tiene problemas y no pude completar la prueba. Se recomienda revisar la integración del AdminDashboard."
+    message: "He realizado pruebas finales del backend. Los endpoints de health check, login (peregrino y admin), y obtención de datos (grupos, destinos, contenido espiritual) funcionan correctamente. Sin embargo, hay un error de recursión en las operaciones CRUD de destinos que impide crear, actualizar o eliminar destinos. Este error es similar al que se solucionó anteriormente en los endpoints de destinos y contenido espiritual, y requiere renombrar la función del endpoint para evitar colisión con la función de la base de datos."
   - agent: "main"
     message: "Integración del frontend con la API real completada exitosamente. Peregrino login funciona correctamente. Admin login necesita revisión. Backend y frontend están ahora completamente integrados en lugar de usar datos mock."
