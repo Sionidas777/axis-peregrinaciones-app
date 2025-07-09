@@ -102,7 +102,7 @@ const PilgrimDashboard = () => {
                 <Heart className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-800">Camino Sagrado</h1>
+                <h1 className="text-2xl font-bold text-gray-800">Axis Peregrinaciones</h1>
                 <p className="text-sm text-gray-600">Bienvenido, {user?.name}</p>
               </div>
             </div>
