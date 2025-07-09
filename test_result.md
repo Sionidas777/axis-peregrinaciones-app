@@ -182,33 +182,39 @@ backend:
 
 frontend:
   - task: "Login component integration"
-    implemented: false
-    working: false
-    file: "frontend/src/components/Login-es.js"
-    stuck_count: 1
+    implemented: true
+    working: true
+    file: "frontend/src/components/Login-integrated.js"
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Currently using mock data (mockUser, mockAdmin) instead of API calls"
+      - working: true
+        agent: "testing"
+        comment: "Login component is now integrated with the API. Successfully tested login with pilgrim credentials (maria@email.com/password) and verified redirection to pilgrim dashboard."
   
   - task: "PilgrimDashboard API integration"
-    implemented: false
-    working: false
-    file: "frontend/src/components/PilgrimDashboard-es.js"
-    stuck_count: 1
+    implemented: true
+    working: true
+    file: "frontend/src/components/PilgrimDashboard-integrated.js"
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Using mock data (mockItineraries, mockDestinations, mockPrayers) instead of API"
+      - working: true
+        agent: "testing"
+        comment: "PilgrimDashboard is now integrated with the API. Successfully loaded pilgrim dashboard showing correct user name (Maria Santos), group name (Holy Land Pilgrimage 2025), and tabs for Itinerario, Destinos, and Espiritual."
   
   - task: "AdminDashboard API integration"
-    implemented: false
+    implemented: true
     working: false
-    file: "frontend/src/components/AdminDashboard-es-editable.js"
+    file: "frontend/src/components/AdminDashboard-integrated.js"
     stuck_count: 1
     priority: "high"
     needs_retesting: true
@@ -216,6 +222,9 @@ frontend:
       - working: false
         agent: "main"
         comment: "Using mock data instead of API calls for CRUD operations"
+      - working: false
+        agent: "testing"
+        comment: "AdminDashboard integration is incomplete. Was able to logout and switch to admin tab, but couldn't complete admin login to verify dashboard functionality. The admin login form is visible but there seems to be an issue with the login process."
 
 metadata:
   created_by: "main_agent"
