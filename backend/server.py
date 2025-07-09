@@ -208,7 +208,7 @@ async def delete_itinerary(itinerary_id: str, current_user: User = Depends(get_c
 
 # Destinations endpoints
 @api_router.get("/destinations", response_model=List[Destination])
-async def get_all_destinations():
+async def get_all_destinations_endpoint():
     """Get all destinations (public)"""
     return await get_all_destinations()
 
