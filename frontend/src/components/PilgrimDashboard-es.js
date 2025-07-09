@@ -8,6 +8,7 @@ import { mockItineraries, mockDestinations, mockPrayers } from '../mock-es';
 import ItineraryView from './ItineraryView-es';
 import DestinationFacts from './DestinationFacts-es';
 import SpiritualSection from './SpiritualSection-es';
+import Footer from './Footer';
 
 const PilgrimDashboard = ({ user, onLogout }) => {
   const [activeTab, setActiveTab] = useState('itinerario');
