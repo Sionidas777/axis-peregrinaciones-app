@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Plus, X, MapPin, Star, Heart } from 'lucide-react';
+import { Alert, AlertDescription } from './ui/alert';
+import { X, Plus, Minus } from 'lucide-react';
 
 const EditDestinationModal = ({ destination, onSave, onClose, isOpen }) => {
   const [formData, setFormData] = useState({
