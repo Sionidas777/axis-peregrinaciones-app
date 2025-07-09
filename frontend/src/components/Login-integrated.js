@@ -40,7 +40,7 @@ const Login = () => {
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold text-gray-800">Axis Peregrinaciones</CardTitle>
           <CardDescription className="text-gray-600">
-            Tu compañero de peregrinación espiritual
+            Tu compañero virtual de peregrinación
           </CardDescription>
         </CardHeader>
         <CardContent>
