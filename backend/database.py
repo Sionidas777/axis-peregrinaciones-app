@@ -350,4 +350,209 @@ async def initialize_database():
     for dest_data in destinations:
         await create_destination(dest_data)
     
+    # Create sample itinerary for the group
+    itinerary_data = ItineraryCreate(
+        group_id="group_001",
+        group_name="Holy Land Pilgrimage 2025",
+        flights={
+            "departure": {
+                "from": "Madrid",
+                "to": "Tel Aviv",
+                "date": "2025-03-15",
+                "time": "10:30",
+                "airline": "El Al",
+                "flight_number": "LY396"
+            },
+            "return": {
+                "from": "Tel Aviv",
+                "to": "Madrid",
+                "date": "2025-03-22",
+                "time": "14:45",
+                "airline": "El Al",
+                "flight_number": "LY397"
+            }
+        },
+        included=[
+            "Vuelos de ida y vuelta",
+            "Alojamiento en hoteles de 4 estrellas",
+            "Todas las comidas según programa",
+            "Guía espiritual durante todo el viaje",
+            "Transporte en autocar con aire acondicionado",
+            "Entradas a todos los lugares santos",
+            "Seguro de viaje"
+        ],
+        not_included=[
+            "Propinas para guía y conductor",
+            "Gastos personales",
+            "Bebidas en las comidas",
+            "Llamadas telefónicas",
+            "Lavandería"
+        ],
+        daily_schedule=[
+            {
+                "day": 1,
+                "date": "15 de marzo",
+                "title": "Llegada a Tierra Santa",
+                "activities": [
+                    "Llegada al aeropuerto Ben Gurion",
+                    "Traslado al hotel en Belén",
+                    "Cena y descanso"
+                ],
+                "biblical_quote": "Y el Verbo se hizo carne y habitó entre nosotros - Juan 1:14",
+                "accommodation": "Hotel Bethlehem Star, Belén"
+            },
+            {
+                "day": 2,
+                "date": "16 de marzo",
+                "title": "Belén - Cuna del Salvador",
+                "activities": [
+                    "Visita a la Basílica de la Natividad",
+                    "Gruta de la Natividad",
+                    "Campo de los Pastores",
+                    "Misa en la Iglesia de Santa Catalina"
+                ],
+                "biblical_quote": "Pero tú, Belén Efrata, aunque eres pequeña entre las familias de Judá, de ti me saldrá el que será Señor en Israel - Miqueas 5:2",
+                "accommodation": "Hotel Bethlehem Star, Belén"
+            },
+            {
+                "day": 3,
+                "date": "17 de marzo",
+                "title": "Jerusalén - Ciudad Santa",
+                "activities": [
+                    "Monte de los Olivos",
+                    "Basílica de la Agonía (Getsemaní)",
+                    "Vía Dolorosa",
+                    "Santo Sepulcro"
+                ],
+                "biblical_quote": "Y cuando llegaron cerca de Jerusalén, a Betfagé y Betania, frente al monte de los Olivos - Marcos 11:1",
+                "accommodation": "Hotel Gloria, Jerusalén"
+            },
+            {
+                "day": 4,
+                "date": "18 de marzo",
+                "title": "Jerusalén - Lugares Santos",
+                "activities": [
+                    "Explanada de las Mezquitas",
+                    "Muro de las Lamentaciones",
+                    "Piscina de Betesda",
+                    "Cenáculo"
+                ],
+                "biblical_quote": "Pedid por la paz de Jerusalén: que vivan seguros los que te aman - Salmo 122:6",
+                "accommodation": "Hotel Gloria, Jerusalén"
+            },
+            {
+                "day": 5,
+                "date": "19 de marzo",
+                "title": "Galilea - Ministerio de Jesús",
+                "activities": [
+                    "Cafarnaúm - Casa de Pedro",
+                    "Iglesia de la Multiplicación",
+                    "Monte de las Bienaventuranzas",
+                    "Río Jordán"
+                ],
+                "biblical_quote": "Jesús recorría toda Galilea, enseñando en sus sinagogas - Mateo 4:23",
+                "accommodation": "Hotel Galilea, Tiberíades"
+            },
+            {
+                "day": 6,
+                "date": "20 de marzo",
+                "title": "Nazaret - Anunciación",
+                "activities": [
+                    "Basílica de la Anunciación",
+                    "Iglesia de San José",
+                    "Caná de Galilea",
+                    "Monte Tabor"
+                ],
+                "biblical_quote": "El ángel le dijo: No temas, María, porque has hallado gracia delante de Dios - Lucas 1:30",
+                "accommodation": "Hotel Galilea, Tiberíades"
+            },
+            {
+                "day": 7,
+                "date": "21 de marzo",
+                "title": "Jericó y Mar Muerto",
+                "activities": [
+                    "Ruinas de Jericó",
+                    "Monasterio de la Tentación",
+                    "Qumrán",
+                    "Baño en el Mar Muerto"
+                ],
+                "biblical_quote": "Y cuando Jesús entró en Jericó, iba pasando por la ciudad - Lucas 19:1",
+                "accommodation": "Hotel Gloria, Jerusalén"
+            },
+            {
+                "day": 8,
+                "date": "22 de marzo",
+                "title": "Despedida de Tierra Santa",
+                "activities": [
+                    "Última visita al Santo Sepulcro",
+                    "Compras en el mercado",
+                    "Traslado al aeropuerto",
+                    "Vuelo de regreso"
+                ],
+                "biblical_quote": "Llevad mi yugo sobre vosotros, y aprended de mí - Mateo 11:29",
+                "accommodation": "Vuelo de regreso"
+            }
+        ]
+    )
+    
+    await create_itinerary(itinerary_data)
+    
+    # Create sample spiritual content
+    spiritual_contents = [
+        SpiritualContentCreate(
+            category="liturgy_of_hours",
+            title="Laudes - Oración de la Mañana",
+            description="Oración matutina de la Liturgia de las Horas",
+            content={
+                "antiphon": "Bendito seas, Señor, Dios de Israel, nuestro Padre",
+                "psalm": "Salmo 95 - Invitatorio",
+                "reading": "Lectura breve",
+                "canticle": "Cántico de Zacarías",
+                "prayer": "Oración final"
+            }
+        ),
+        SpiritualContentCreate(
+            category="rosary",
+            title="Santo Rosario",
+            description="Misterios del Rosario para la meditación diaria",
+            content={
+                "joyful_mysteries": [
+                    "La Anunciación",
+                    "La Visitación",
+                    "El Nacimiento de Jesús",
+                    "La Presentación en el Templo",
+                    "El Niño Jesús perdido y hallado en el Templo"
+                ],
+                "sorrowful_mysteries": [
+                    "La Agonía en el Huerto",
+                    "La Flagelación",
+                    "La Coronación de Espinas",
+                    "El Camino del Calvario",
+                    "La Crucifixión y Muerte"
+                ],
+                "glorious_mysteries": [
+                    "La Resurrección",
+                    "La Ascensión",
+                    "La Venida del Espíritu Santo",
+                    "La Asunción de María",
+                    "La Coronación de María"
+                ]
+            }
+        ),
+        SpiritualContentCreate(
+            category="daily_prayers",
+            title="Oraciones del Peregrino",
+            description="Oraciones especiales para el tiempo de peregrinación",
+            content={
+                "morning_prayer": "Señor, te entrego este día de peregrinación. Que mis pasos sigan los tuyos y mi corazón se abra a tu gracia.",
+                "evening_prayer": "Gracias, Señor, por este día santo. Que las experiencias vividas fructifiquen en mi alma.",
+                "travel_prayer": "Acompaña, Señor, nuestro camino. Que María, Reina de los Peregrinos, nos proteja.",
+                "unity_prayer": "Señor, bendice a nuestro grupo de peregrinos. Que seamos uno en Ti como Tú eres uno con el Padre."
+            }
+        )
+    ]
+    
+    for content_data in spiritual_contents:
+        await create_spiritual_content(content_data)
+    
     print("Database initialized successfully!")
