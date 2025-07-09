@@ -84,21 +84,21 @@ const ItineraryView = ({ itinerary }) => {
 
       {/* Inclusions & Exclusions */}
       <Card className="bg-white/95 backdrop-blur-sm shadow-xl">
-        <CollapsibleTrigger asChild>
-          <CardHeader 
-            className="cursor-pointer hover:bg-gray-50 transition-colors"
-            onClick={() => setShowInclusions(!showInclusions)}
-          >
-            <CardTitle className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Utensils className="w-5 h-5 text-green-600" />
-                What's Included & Not Included
-              </div>
-              {showInclusions ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-            </CardTitle>
-          </CardHeader>
-        </CollapsibleTrigger>
         <Collapsible open={showInclusions}>
+          <CollapsibleTrigger asChild>
+            <CardHeader 
+              className="cursor-pointer hover:bg-gray-50 transition-colors"
+              onClick={() => setShowInclusions(!showInclusions)}
+            >
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Utensils className="w-5 h-5 text-green-600" />
+                  What's Included & Not Included
+                </div>
+                {showInclusions ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+              </CardTitle>
+            </CardHeader>
+          </CollapsibleTrigger>
           <CollapsibleContent>
             <CardContent className="pt-0">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
