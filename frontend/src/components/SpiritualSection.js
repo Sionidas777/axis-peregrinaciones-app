@@ -212,21 +212,21 @@ const SpiritualSection = ({ prayers }) => {
             <CardContent className="p-6 space-y-4">
               {prayers.daily_prayers.prayers.map((prayer, index) => (
                 <Card key={index} className="border shadow-md">
-                  <CollapsibleTrigger asChild>
-                    <CardHeader 
-                      className="cursor-pointer hover:bg-gray-50 transition-colors"
-                      onClick={() => togglePrayer(`daily_${index}`)}
-                    >
-                      <CardTitle className="flex items-center justify-between text-lg">
-                        <span>{prayer.title}</span>
-                        {expandedPrayer === `daily_${index}` ? 
-                          <ChevronUp className="w-5 h-5" /> : 
-                          <ChevronDown className="w-5 h-5" />
-                        }
-                      </CardTitle>
-                    </CardHeader>
-                  </CollapsibleTrigger>
                   <Collapsible open={expandedPrayer === `daily_${index}`}>
+                    <CollapsibleTrigger asChild>
+                      <CardHeader 
+                        className="cursor-pointer hover:bg-gray-50 transition-colors"
+                        onClick={() => togglePrayer(`daily_${index}`)}
+                      >
+                        <CardTitle className="flex items-center justify-between text-lg">
+                          <span>{prayer.title}</span>
+                          {expandedPrayer === `daily_${index}` ? 
+                            <ChevronUp className="w-5 h-5" /> : 
+                            <ChevronDown className="w-5 h-5" />
+                          }
+                        </CardTitle>
+                      </CardHeader>
+                    </CollapsibleTrigger>
                     <CollapsibleContent>
                       <CardContent className="pt-0">
                         <div className="bg-gray-50 p-4 rounded-lg">
