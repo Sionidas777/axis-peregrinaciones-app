@@ -358,21 +358,11 @@ async def initialize_database():
         group_name="Holy Land Pilgrimage 2025",
         flights=FlightDetails(
             departure=FlightInfo(
-                from_location="Madrid",
-                to="Tel Aviv",
-                date="2025-03-15",
-                time="10:30",
-                airline="El Al",
-                flight_number="LY396"
+                **{"from": "Madrid", "to": "Tel Aviv", "date": "2025-03-15", "time": "10:30", "airline": "El Al", "flight_number": "LY396"}
             ),
-            return_flight=FlightInfo(
-                from_location="Tel Aviv",
-                to="Madrid",
-                date="2025-03-22",
-                time="14:45",
-                airline="El Al",
-                flight_number="LY397"
-            )
+            **{"return": FlightInfo(
+                **{"from": "Tel Aviv", "to": "Madrid", "date": "2025-03-22", "time": "14:45", "airline": "El Al", "flight_number": "LY397"}
+            )}
         ),
         included=[
             "Vuelos de ida y vuelta",
