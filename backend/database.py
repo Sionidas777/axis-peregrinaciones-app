@@ -279,7 +279,7 @@ async def initialize_database():
     pilgrim2_password_hash = get_password_hash(pilgrim2_data.password)
     await create_user(pilgrim2_data, pilgrim2_password_hash)
     
-    # Create sample pilgrimage group
+    # Create sample pilgrimage group with fixed ID
     group_data = PilgrimageGroupCreate(
         name="Holy Land Pilgrimage 2025",
         destination="Jerusalem & Bethlehem",
@@ -287,7 +287,10 @@ async def initialize_database():
         end_date="2025-03-22",
         status=PilgrimageStatus.UPCOMING
     )
-    group = await create_pilgrimage_group(group_data)
+    # Create group with fixed ID for consistency with mock data
+    group = PilgrimageGroup(**group_data.dict())
+    group.id = "group_001"  # Fixed ID to match mock data
+    await groups_collection.insert_one(group.dict())
     
     # Update group with pilgrim info
     await add_pilgrim_to_group(group.id, PilgrimInfo(
