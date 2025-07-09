@@ -351,27 +351,29 @@ async def initialize_database():
         await create_destination(dest_data)
     
     # Create sample itinerary for the group
+    from .models import FlightInfo, FlightDetails, DailySchedule
+    
     itinerary_data = ItineraryCreate(
         group_id="group_001",
         group_name="Holy Land Pilgrimage 2025",
-        flights={
-            "departure": {
-                "from": "Madrid",
-                "to": "Tel Aviv",
-                "date": "2025-03-15",
-                "time": "10:30",
-                "airline": "El Al",
-                "flight_number": "LY396"
-            },
-            "return": {
-                "from": "Tel Aviv",
-                "to": "Madrid",
-                "date": "2025-03-22",
-                "time": "14:45",
-                "airline": "El Al",
-                "flight_number": "LY397"
-            }
-        },
+        flights=FlightDetails(
+            departure=FlightInfo(
+                from_location="Madrid",
+                to="Tel Aviv",
+                date="2025-03-15",
+                time="10:30",
+                airline="El Al",
+                flight_number="LY396"
+            ),
+            return_flight=FlightInfo(
+                from_location="Tel Aviv",
+                to="Madrid",
+                date="2025-03-22",
+                time="14:45",
+                airline="El Al",
+                flight_number="LY397"
+            )
+        ),
         included=[
             "Vuelos de ida y vuelta",
             "Alojamiento en hoteles de 4 estrellas",
@@ -389,109 +391,109 @@ async def initialize_database():
             "Lavandería"
         ],
         daily_schedule=[
-            {
-                "day": 1,
-                "date": "15 de marzo",
-                "title": "Llegada a Tierra Santa",
-                "activities": [
+            DailySchedule(
+                day=1,
+                date="15 de marzo",
+                title="Llegada a Tierra Santa",
+                activities=[
                     "Llegada al aeropuerto Ben Gurion",
                     "Traslado al hotel en Belén",
                     "Cena y descanso"
                 ],
-                "biblical_quote": "Y el Verbo se hizo carne y habitó entre nosotros - Juan 1:14",
-                "accommodation": "Hotel Bethlehem Star, Belén"
-            },
-            {
-                "day": 2,
-                "date": "16 de marzo",
-                "title": "Belén - Cuna del Salvador",
-                "activities": [
+                biblical_quote="Y el Verbo se hizo carne y habitó entre nosotros - Juan 1:14",
+                accommodation="Hotel Bethlehem Star, Belén"
+            ),
+            DailySchedule(
+                day=2,
+                date="16 de marzo",
+                title="Belén - Cuna del Salvador",
+                activities=[
                     "Visita a la Basílica de la Natividad",
                     "Gruta de la Natividad",
                     "Campo de los Pastores",
                     "Misa en la Iglesia de Santa Catalina"
                 ],
-                "biblical_quote": "Pero tú, Belén Efrata, aunque eres pequeña entre las familias de Judá, de ti me saldrá el que será Señor en Israel - Miqueas 5:2",
-                "accommodation": "Hotel Bethlehem Star, Belén"
-            },
-            {
-                "day": 3,
-                "date": "17 de marzo",
-                "title": "Jerusalén - Ciudad Santa",
-                "activities": [
+                biblical_quote="Pero tú, Belén Efrata, aunque eres pequeña entre las familias de Judá, de ti me saldrá el que será Señor en Israel - Miqueas 5:2",
+                accommodation="Hotel Bethlehem Star, Belén"
+            ),
+            DailySchedule(
+                day=3,
+                date="17 de marzo",
+                title="Jerusalén - Ciudad Santa",
+                activities=[
                     "Monte de los Olivos",
                     "Basílica de la Agonía (Getsemaní)",
                     "Vía Dolorosa",
                     "Santo Sepulcro"
                 ],
-                "biblical_quote": "Y cuando llegaron cerca de Jerusalén, a Betfagé y Betania, frente al monte de los Olivos - Marcos 11:1",
-                "accommodation": "Hotel Gloria, Jerusalén"
-            },
-            {
-                "day": 4,
-                "date": "18 de marzo",
-                "title": "Jerusalén - Lugares Santos",
-                "activities": [
+                biblical_quote="Y cuando llegaron cerca de Jerusalén, a Betfagé y Betania, frente al monte de los Olivos - Marcos 11:1",
+                accommodation="Hotel Gloria, Jerusalén"
+            ),
+            DailySchedule(
+                day=4,
+                date="18 de marzo",
+                title="Jerusalén - Lugares Santos",
+                activities=[
                     "Explanada de las Mezquitas",
                     "Muro de las Lamentaciones",
                     "Piscina de Betesda",
                     "Cenáculo"
                 ],
-                "biblical_quote": "Pedid por la paz de Jerusalén: que vivan seguros los que te aman - Salmo 122:6",
-                "accommodation": "Hotel Gloria, Jerusalén"
-            },
-            {
-                "day": 5,
-                "date": "19 de marzo",
-                "title": "Galilea - Ministerio de Jesús",
-                "activities": [
+                biblical_quote="Pedid por la paz de Jerusalén: que vivan seguros los que te aman - Salmo 122:6",
+                accommodation="Hotel Gloria, Jerusalén"
+            ),
+            DailySchedule(
+                day=5,
+                date="19 de marzo",
+                title="Galilea - Ministerio de Jesús",
+                activities=[
                     "Cafarnaúm - Casa de Pedro",
                     "Iglesia de la Multiplicación",
                     "Monte de las Bienaventuranzas",
                     "Río Jordán"
                 ],
-                "biblical_quote": "Jesús recorría toda Galilea, enseñando en sus sinagogas - Mateo 4:23",
-                "accommodation": "Hotel Galilea, Tiberíades"
-            },
-            {
-                "day": 6,
-                "date": "20 de marzo",
-                "title": "Nazaret - Anunciación",
-                "activities": [
+                biblical_quote="Jesús recorría toda Galilea, enseñando en sus sinagogas - Mateo 4:23",
+                accommodation="Hotel Galilea, Tiberíades"
+            ),
+            DailySchedule(
+                day=6,
+                date="20 de marzo",
+                title="Nazaret - Anunciación",
+                activities=[
                     "Basílica de la Anunciación",
                     "Iglesia de San José",
                     "Caná de Galilea",
                     "Monte Tabor"
                 ],
-                "biblical_quote": "El ángel le dijo: No temas, María, porque has hallado gracia delante de Dios - Lucas 1:30",
-                "accommodation": "Hotel Galilea, Tiberíades"
-            },
-            {
-                "day": 7,
-                "date": "21 de marzo",
-                "title": "Jericó y Mar Muerto",
-                "activities": [
+                biblical_quote="El ángel le dijo: No temas, María, porque has hallado gracia delante de Dios - Lucas 1:30",
+                accommodation="Hotel Galilea, Tiberíades"
+            ),
+            DailySchedule(
+                day=7,
+                date="21 de marzo",
+                title="Jericó y Mar Muerto",
+                activities=[
                     "Ruinas de Jericó",
                     "Monasterio de la Tentación",
                     "Qumrán",
                     "Baño en el Mar Muerto"
                 ],
-                "biblical_quote": "Y cuando Jesús entró en Jericó, iba pasando por la ciudad - Lucas 19:1",
-                "accommodation": "Hotel Gloria, Jerusalén"
-            },
-            {
-                "day": 8,
-                "date": "22 de marzo",
-                "title": "Despedida de Tierra Santa",
-                "activities": [
+                biblical_quote="Y cuando Jesús entró en Jericó, iba pasando por la ciudad - Lucas 19:1",
+                accommodation="Hotel Gloria, Jerusalén"
+            ),
+            DailySchedule(
+                day=8,
+                date="22 de marzo",
+                title="Despedida de Tierra Santa",
+                activities=[
                     "Última visita al Santo Sepulcro",
                     "Compras en el mercado",
                     "Traslado al aeropuerto",
                     "Vuelo de regreso"
                 ],
-                "biblical_quote": "Llevad mi yugo sobre vosotros, y aprended de mí - Mateo 11:29",
-                "accommodation": "Vuelo de regreso"
-            }
+                biblical_quote="Llevad mi yugo sobre vosotros, y aprended de mí - Mateo 11:29",
+                accommodation="Vuelo de regreso"
+            )
         ]
     )
     
