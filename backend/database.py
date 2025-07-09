@@ -1,5 +1,5 @@
 from motor.motor_asyncio import AsyncIOMotorClient
-from models import *
+from .models import *
 from typing import List, Optional
 import os
 from datetime import datetime
