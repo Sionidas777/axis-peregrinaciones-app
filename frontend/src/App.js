@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Login from './components/Login-es';
-import PilgrimDashboard from './components/PilgrimDashboard-es';
-import AdminDashboard from './components/AdminDashboard-es-editable';
+import Login from './components/Login-integrated';
+import PilgrimDashboard from './components/PilgrimDashboard-integrated';
+import AdminDashboard from './components/AdminDashboard-integrated';
 
 function App() {
   const [user, setUser] = useState(null);
