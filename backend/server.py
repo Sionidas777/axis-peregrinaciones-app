@@ -252,7 +252,7 @@ async def delete_destination(destination_id: str, current_user: User = Depends(g
 
 # Spiritual Content endpoints
 @api_router.get("/spiritual-content", response_model=List[SpiritualContent])
-async def get_all_spiritual_content():
+async def get_all_spiritual_content_endpoint():
     """Get all spiritual content (public)"""
     return await get_all_spiritual_content()
 
