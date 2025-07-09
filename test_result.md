@@ -101,3 +101,100 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "La aplicación de peregrinación 'Axis Peregrinaciones' está usando datos mock en lugar de conectarse a la API real del backend. El backend funciona correctamente pero los componentes frontend no están integrados para usar la API."
+
+backend:
+  - task: "API Authentication endpoints"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Backend logs show successful login calls to /api/auth/login returning 200 OK"
+  
+  - task: "API Groups endpoints"
+    implemented: true
+    working: false
+    file: "backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "Backend logs show 404 errors on /api/groups/group_001 - UUID mismatch issue"
+  
+  - task: "Database initialization"
+    implemented: true
+    working: false
+    file: "backend/database.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "Database uses UUID for group IDs but mock data expects fixed IDs like 'group_001'"
+
+frontend:
+  - task: "Login component integration"
+    implemented: false
+    working: false
+    file: "frontend/src/components/Login-es.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "Currently using mock data (mockUser, mockAdmin) instead of API calls"
+  
+  - task: "PilgrimDashboard API integration"
+    implemented: false
+    working: false
+    file: "frontend/src/components/PilgrimDashboard-es.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "Using mock data (mockItineraries, mockDestinations, mockPrayers) instead of API"
+  
+  - task: "AdminDashboard API integration"
+    implemented: false
+    working: false
+    file: "frontend/src/components/AdminDashboard-es-editable.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "Using mock data instead of API calls for CRUD operations"
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Fix database initialization UUID mismatch"
+    - "Implement Login API integration"
+    - "Implement Dashboard API integration"
+  stuck_tasks:
+    - "API Groups endpoints"
+    - "Database initialization"
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Identificado problema principal: Frontend usa mock data, backend funciona pero tiene problema UUID mismatch en grupos. Priorizando arreglar base de datos primero y luego integrar frontend."
