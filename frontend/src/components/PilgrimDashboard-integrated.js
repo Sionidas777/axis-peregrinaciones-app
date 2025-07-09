@@ -201,6 +201,9 @@ const PilgrimDashboard = () => {
           </TabsContent>
         </Tabs>
       </main>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
