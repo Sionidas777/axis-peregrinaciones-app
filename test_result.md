@@ -119,27 +119,33 @@ backend:
   
   - task: "API Groups endpoints"
     implemented: true
-    working: false
+    working: true
     file: "backend/server.py"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Backend logs show 404 errors on /api/groups/group_001 - UUID mismatch issue"
+      - working: true
+        agent: "testing"
+        comment: "Fixed issue with group_001 endpoint. The database initialization correctly creates a group with ID 'group_001' and the endpoint now returns it properly."
   
   - task: "Database initialization"
     implemented: true
-    working: false
+    working: true
     file: "backend/database.py"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Database uses UUID for group IDs but mock data expects fixed IDs like 'group_001'"
+      - working: true
+        agent: "testing"
+        comment: "Database initialization is working correctly. The database.py file already has code to create a group with fixed ID 'group_001' to match mock data."
 
 frontend:
   - task: "Login component integration"
