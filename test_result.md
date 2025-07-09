@@ -116,6 +116,9 @@ backend:
       - working: true
         agent: "main"
         comment: "Backend logs show successful login calls to /api/auth/login returning 200 OK"
+      - working: true
+        agent: "testing"
+        comment: "Verified login functionality with both admin and pilgrim credentials. Login returns proper tokens and user information."
   
   - task: "API Groups endpoints"
     implemented: true
