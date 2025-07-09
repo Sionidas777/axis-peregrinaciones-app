@@ -36,9 +36,9 @@ const Login = ({ onLogin }) => {
       
       <Card className="w-full max-w-md relative z-10 bg-white/95 backdrop-blur-sm shadow-2xl">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold text-gray-800">Camino Sagrado</CardTitle>
+          <CardTitle className="text-3xl font-bold text-gray-800">Axis Peregrinaciones</CardTitle>
           <CardDescription className="text-gray-600">
-            Tu compañero de peregrinación
+            Tu compañero de peregrinación espiritual
           </CardDescription>
         </CardHeader>
         <CardContent>
