@@ -234,12 +234,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Fix database initialization UUID mismatch"
-    - "Implement Login API integration"
-    - "Implement Dashboard API integration"
+    - "AdminDashboard API integration"
   stuck_tasks:
-    - "API Groups endpoints"
-    - "Database initialization"
+    - "AdminDashboard API integration"
   test_all: false
   test_priority: "high_first"
 
@@ -248,3 +245,5 @@ agent_communication:
     message: "Identificado problema principal: Frontend usa mock data, backend funciona pero tiene problema UUID mismatch en grupos. Priorizando arreglar base de datos primero y luego integrar frontend."
   - agent: "testing"
     message: "He verificado todos los endpoints solicitados y corregido los problemas encontrados. El health check, login, grupos, destinos y contenido espiritual funcionan correctamente. Los problemas de recursión en los endpoints de destinos y contenido espiritual han sido solucionados."
+  - agent: "testing"
+    message: "He probado la integración del frontend con la API real. El login de peregrino funciona correctamente y muestra el dashboard con los datos correctos (nombre de usuario, grupo, pestañas). El login de administrador tiene problemas y no pude completar la prueba. Se recomienda revisar la integración del AdminDashboard."
