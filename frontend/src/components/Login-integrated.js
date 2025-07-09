@@ -4,27 +4,48 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { useAuth } from '../contexts/AuthContext';
-import { handleAPIError } from '../services/api';
+import { Alert, AlertDescription } from './ui/alert';
+import { authAPI, handleAPIError } from '../services/api';
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const { login } = useAuth();
+  const [activeTab, setActiveTab] = useState('peregrino');
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-
+    
     try {
-      await login({ email, password });
+      const credentials = { email, password };
+      const response = await authAPI.login(credentials);
+      
+      // Get user data from response
+      const userData = response.user;
+      
+      // Call onLogin with user data
+      onLogin(userData);
+      
     } catch (error) {
+      console.error('Login error:', error);
       setError(handleAPIError(error));
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fillDemoCredentials = (userType) => {
+    if (userType === 'admin') {
+      setEmail('admin@pilgrimageapp.com');
+      setPassword('admin123');
+      setActiveTab('admin');
+    } else {
+      setEmail('maria@email.com');
+      setPassword('password');
+      setActiveTab('peregrino');
     }
   };
 
@@ -44,56 +65,136 @@ const Login = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
-            {error && (
-              <div className="bg-red-50 border border-red-200 rounded-md p-3 text-sm text-red-700">
-                {error}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="peregrino">Peregrino</TabsTrigger>
+              <TabsTrigger value="admin">Administrador</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="peregrino" className="space-y-4">
+              {error && (
+                <Alert className="border-red-200 bg-red-50">
+                  <AlertDescription className="text-red-700">
+                    {error}
+                  </AlertDescription>
+                </Alert>
+              )}
+              
+              <form onSubmit={handleLogin} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email">Correo Electrónico</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="peregrino@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="password">Contraseña</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Ingresa tu contraseña"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <Button 
+                  type="submit" 
+                  className="w-full bg-blue-600 hover:bg-blue-700 transition-colors"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión como Peregrino'}
+                </Button>
+              </form>
+              
+              <div className="space-y-2">
+                <Button 
+                  variant="outline"
+                  onClick={() => fillDemoCredentials('peregrino')}
+                  className="w-full text-xs"
+                  disabled={isLoading}
+                >
+                  Usar credenciales demo de peregrino
+                </Button>
+                <div className="text-xs text-gray-500 text-center">
+                  Credenciales demo: maria@email.com / password
+                </div>
               </div>
-            )}
+              
+              <div className="mt-4 pt-2 border-t border-gray-200">
+                <p className="text-xs text-gray-400 text-center">
+                  © 2025 Axis Peregrinaciones - Tu compañero virtual de peregrinación
+                </p>
+              </div>
+            </TabsContent>
             
-            <div className="space-y-2">
-              <Label htmlFor="email">Correo Electrónico</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="tu@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="password">Contraseña</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Ingresa tu contraseña"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            
-            <Button 
-              type="submit" 
-              className="w-full bg-blue-600 hover:bg-blue-700 transition-colors"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
-            </Button>
-          </form>
-          
-          <div className="mt-4 text-xs text-gray-500 text-center">
-            <p>Credenciales de prueba:</p>
-            <p><strong>Admin:</strong> admin@pilgrimageapp.com / admin123</p>
-            <p><strong>Peregrino:</strong> maria@email.com / password</p>
-            <div className="mt-4 pt-4 border-t border-gray-200">
-              <p className="text-xs text-gray-400">
-                © 2025 Axis Peregrinaciones - Guiando almas en su camino espiritual
-              </p>
-            </div>
-          </div>
+            <TabsContent value="admin" className="space-y-4">
+              {error && (
+                <Alert className="border-red-200 bg-red-50">
+                  <AlertDescription className="text-red-700">
+                    {error}
+                  </AlertDescription>
+                </Alert>
+              )}
+              
+              <form onSubmit={handleLogin} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="admin-email">Correo Electrónico</Label>
+                  <Input
+                    id="admin-email"
+                    type="email"
+                    placeholder="admin@peregrinacion.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="admin-password">Contraseña</Label>
+                  <Input
+                    id="admin-password"
+                    type="password"
+                    placeholder="Ingresa tu contraseña"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <Button 
+                  type="submit" 
+                  className="w-full bg-red-600 hover:bg-red-700 transition-colors"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión como Administrador'}
+                </Button>
+              </form>
+              
+              <div className="space-y-2">
+                <Button 
+                  variant="outline"
+                  onClick={() => fillDemoCredentials('admin')}
+                  className="w-full text-xs"
+                  disabled={isLoading}
+                >
+                  Usar credenciales demo de admin
+                </Button>
+                <div className="text-xs text-gray-500 text-center">
+                  Credenciales demo: admin@pilgrimageapp.com / admin123
+                </div>
+              </div>
+              
+              <div className="mt-4 pt-2 border-t border-gray-200">
+                <p className="text-xs text-gray-400 text-center">
+                  © 2025 Axis Peregrinaciones - Tu compañero virtual de peregrinación
+                </p>
+              </div>
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
     </div>
