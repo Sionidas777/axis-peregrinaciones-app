@@ -1,12 +1,485 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Plus, X, Plane, Calendar, MapPin, Quote } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Alert, AlertDescription } from './ui/alert';
+import { X, Plus, Minus } from 'lucide-react';
+
+const EditItineraryModal = ({ itinerary, groups, onSave, onClose, isOpen }) => {
+  const [formData, setFormData] = useState({
+    group_id: '',
+    group_name: '',
+    included: [''],
+    not_included: [''],
+    daily_schedule: [{
+      day: 1,
+      date: '',
+      title: '',
+      activities: [''],
+      biblical_quote: '',
+      accommodation: ''
+    }]
+  });
+  
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (itinerary) {
+      setFormData({
+        group_id: itinerary.group_id || '',
+        group_name: itinerary.group_name || '',
+        included: itinerary.included || [''],
+        not_included: itinerary.not_included || [''],
+        daily_schedule: itinerary.daily_schedule || [{
+          day: 1,
+          date: '',
+          title: '',
+          activities: [''],
+          biblical_quote: '',
+          accommodation: ''
+        }]
+      });
+    } else {
+      setFormData({
+        group_id: '',
+        group_name: '',
+        included: [''],
+        not_included: [''],
+        daily_schedule: [{
+          day: 1,
+          date: '',
+          title: '',
+          activities: [''],
+          biblical_quote: '',
+          accommodation: ''
+        }]
+      });
+    }
+    setError('');
+  }, [itinerary, isOpen]);
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleIncludedChange = (index, value) => {
+    const newIncluded = [...formData.included];
+    newIncluded[index] = value;
+    setFormData(prev => ({
+      ...prev,
+      included: newIncluded
+    }));
+  };
+
+  const addIncluded = () => {
+    setFormData(prev => ({
+      ...prev,
+      included: [...prev.included, '']
+    }));
+  };
+
+  const removeIncluded = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      included: prev.included.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleNotIncludedChange = (index, value) => {
+    const newNotIncluded = [...formData.not_included];
+    newNotIncluded[index] = value;
+    setFormData(prev => ({
+      ...prev,
+      not_included: newNotIncluded
+    }));
+  };
+
+  const addNotIncluded = () => {
+    setFormData(prev => ({
+      ...prev,
+      not_included: [...prev.not_included, '']
+    }));
+  };
+
+  const removeNotIncluded = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      not_included: prev.not_included.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleDayChange = (dayIndex, field, value) => {
+    const newSchedule = [...formData.daily_schedule];
+    newSchedule[dayIndex] = {
+      ...newSchedule[dayIndex],
+      [field]: value
+    };
+    setFormData(prev => ({
+      ...prev,
+      daily_schedule: newSchedule
+    }));
+  };
+
+  const handleActivityChange = (dayIndex, activityIndex, value) => {
+    const newSchedule = [...formData.daily_schedule];
+    const newActivities = [...newSchedule[dayIndex].activities];
+    newActivities[activityIndex] = value;
+    newSchedule[dayIndex] = {
+      ...newSchedule[dayIndex],
+      activities: newActivities
+    };
+    setFormData(prev => ({
+      ...prev,
+      daily_schedule: newSchedule
+    }));
+  };
+
+  const addActivity = (dayIndex) => {
+    const newSchedule = [...formData.daily_schedule];
+    newSchedule[dayIndex] = {
+      ...newSchedule[dayIndex],
+      activities: [...newSchedule[dayIndex].activities, '']
+    };
+    setFormData(prev => ({
+      ...prev,
+      daily_schedule: newSchedule
+    }));
+  };
+
+  const removeActivity = (dayIndex, activityIndex) => {
+    const newSchedule = [...formData.daily_schedule];
+    newSchedule[dayIndex] = {
+      ...newSchedule[dayIndex],
+      activities: newSchedule[dayIndex].activities.filter((_, i) => i !== activityIndex)
+    };
+    setFormData(prev => ({
+      ...prev,
+      daily_schedule: newSchedule
+    }));
+  };
+
+  const addDay = () => {
+    const nextDay = formData.daily_schedule.length + 1;
+    setFormData(prev => ({
+      ...prev,
+      daily_schedule: [...prev.daily_schedule, {
+        day: nextDay,
+        date: '',
+        title: '',
+        activities: [''],
+        biblical_quote: '',
+        accommodation: ''
+      }]
+    }));
+  };
+
+  const removeDay = (dayIndex) => {
+    if (formData.daily_schedule.length > 1) {
+      setFormData(prev => ({
+        ...prev,
+        daily_schedule: prev.daily_schedule.filter((_, i) => i !== dayIndex)
+      }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+    
+    try {
+      // Clean data before sending
+      const cleanedData = {
+        ...formData,
+        included: formData.included.filter(item => item.trim() !== ''),
+        not_included: formData.not_included.filter(item => item.trim() !== ''),
+        daily_schedule: formData.daily_schedule.map(day => ({
+          ...day,
+          activities: day.activities.filter(activity => activity.trim() !== '')
+        }))
+      };
+      
+      await onSave(cleanedData);
+      onClose();
+    } catch (error) {
+      console.error('Error saving itinerary:', error);
+      setError('Error al guardar el itinerario. Por favor, inténtalo de nuevo.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleClose = () => {
+    setFormData({
+      group_id: '',
+      group_name: '',
+      included: [''],
+      not_included: [''],
+      daily_schedule: [{
+        day: 1,
+        date: '',
+        title: '',
+        activities: [''],
+        biblical_quote: '',
+        accommodation: ''
+      }]
+    });
+    setError('');
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center justify-between">
+            {itinerary ? 'Editar Itinerario' : 'Crear Nuevo Itinerario'}
+            <Button variant="ghost" size="icon" onClick={handleClose}>
+              <X className="h-4 w-4" />
+            </Button>
+          </DialogTitle>
+          <DialogDescription>
+            {itinerary ? 'Modifica los detalles del itinerario.' : 'Crea un nuevo itinerario de peregrinación.'}
+          </DialogDescription>
+        </DialogHeader>
+        
+        {error && (
+          <Alert className="border-red-200 bg-red-50">
+            <AlertDescription className="text-red-700">
+              {error}
+            </AlertDescription>
+          </Alert>
+        )}
+        
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Basic Info */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="group_id">Grupo</Label>
+              <Select value={formData.group_id} onValueChange={(value) => {
+                handleInputChange('group_id', value);
+                const selectedGroup = groups?.find(g => g.id === value);
+                handleInputChange('group_name', selectedGroup?.name || '');
+              }}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecciona un grupo" />
+                </SelectTrigger>
+                <SelectContent>
+                  {groups?.map(group => (
+                    <SelectItem key={group.id} value={group.id}>
+                      {group.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="group_name">Nombre del Grupo</Label>
+              <Input
+                id="group_name"
+                value={formData.group_name}
+                onChange={(e) => handleInputChange('group_name', e.target.value)}
+                placeholder="Nombre del grupo"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Included Items */}
+          <div className="space-y-2">
+            <Label>Incluye</Label>
+            {formData.included.map((item, index) => (
+              <div key={index} className="flex gap-2">
+                <Input
+                  value={item}
+                  onChange={(e) => handleIncludedChange(index, e.target.value)}
+                  placeholder="¿Qué está incluido?"
+                />
+                {formData.included.length > 1 && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    onClick={() => removeIncluded(index)}
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={addIncluded}
+              className="w-full"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Agregar Inclusión
+            </Button>
+          </div>
+
+          {/* Not Included Items */}
+          <div className="space-y-2">
+            <Label>No Incluye</Label>
+            {formData.not_included.map((item, index) => (
+              <div key={index} className="flex gap-2">
+                <Input
+                  value={item}
+                  onChange={(e) => handleNotIncludedChange(index, e.target.value)}
+                  placeholder="¿Qué no está incluido?"
+                />
+                {formData.not_included.length > 1 && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    onClick={() => removeNotIncluded(index)}
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={addNotIncluded}
+              className="w-full"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Agregar Exclusión
+            </Button>
+          </div>
+
+          {/* Daily Schedule */}
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <Label className="text-lg font-semibold">Cronograma Diario</Label>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={addDay}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Agregar Día
+              </Button>
+            </div>
+            
+            {formData.daily_schedule.map((day, dayIndex) => (
+              <div key={dayIndex} className="border rounded-lg p-4 space-y-4">
+                <div className="flex justify-between items-center">
+                  <h4 className="font-medium">Día {day.day}</h4>
+                  {formData.daily_schedule.length > 1 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => removeDay(dayIndex)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Fecha</Label>
+                    <Input
+                      value={day.date}
+                      onChange={(e) => handleDayChange(dayIndex, 'date', e.target.value)}
+                      placeholder="ej. 15 de marzo"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label>Título</Label>
+                    <Input
+                      value={day.title}
+                      onChange={(e) => handleDayChange(dayIndex, 'title', e.target.value)}
+                      placeholder="ej. Llegada a Tierra Santa"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>Actividades</Label>
+                  {day.activities.map((activity, activityIndex) => (
+                    <div key={activityIndex} className="flex gap-2">
+                      <Input
+                        value={activity}
+                        onChange={(e) => handleActivityChange(dayIndex, activityIndex, e.target.value)}
+                        placeholder="Actividad del día"
+                      />
+                      {day.activities.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() => removeActivity(dayIndex, activityIndex)}
+                        >
+                          <Minus className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => addActivity(dayIndex)}
+                    size="sm"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Agregar Actividad
+                  </Button>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>Cita Bíblica</Label>
+                  <Textarea
+                    value={day.biblical_quote}
+                    onChange={(e) => handleDayChange(dayIndex, 'biblical_quote', e.target.value)}
+                    placeholder="Cita bíblica para reflexionar"
+                    rows={2}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>Alojamiento</Label>
+                  <Input
+                    value={day.accommodation}
+                    onChange={(e) => handleDayChange(dayIndex, 'accommodation', e.target.value)}
+                    placeholder="Hotel o lugar de alojamiento"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="flex justify-end space-x-2 pt-4">
+            <Button type="button" variant="outline" onClick={handleClose} disabled={isLoading}>
+              Cancelar
+            </Button>
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? 'Guardando...' : (itinerary ? 'Actualizar' : 'Crear')}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default EditItineraryModal;
 
 const EditItineraryModal = ({ itinerary, onSave, onClose, isOpen }) => {
   const [formData, setFormData] = useState({
