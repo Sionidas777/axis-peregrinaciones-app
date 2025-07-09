@@ -224,7 +224,7 @@ async def get_destination(destination_id: str):
     return destination
 
 @api_router.post("/destinations", response_model=Destination)
-async def create_destination(destination_data: DestinationCreate, current_user: User = Depends(get_current_admin)):
+async def create_destination_endpoint(destination_data: DestinationCreate, current_user: User = Depends(get_current_admin)):
     """Create new destination (admin only)"""
     return await create_destination(destination_data)
 
