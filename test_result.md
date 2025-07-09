@@ -237,3 +237,5 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Identificado problema principal: Frontend usa mock data, backend funciona pero tiene problema UUID mismatch en grupos. Priorizando arreglar base de datos primero y luego integrar frontend."
+  - agent: "testing"
+    message: "He verificado todos los endpoints solicitados y corregido los problemas encontrados. El health check, login, grupos, destinos y contenido espiritual funcionan correctamente. Los problemas de recursión en los endpoints de destinos y contenido espiritual han sido solucionados."
