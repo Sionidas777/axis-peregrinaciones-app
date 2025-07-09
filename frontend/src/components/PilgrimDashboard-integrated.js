@@ -9,6 +9,7 @@ import { groupsAPI, itinerariesAPI, destinationsAPI, spiritualAPI, handleAPIErro
 import ItineraryView from './ItineraryView-integrated';
 import DestinationFacts from './DestinationFacts-integrated';
 import SpiritualSection from './SpiritualSection-integrated';
+import Footer from './Footer';
 
 const PilgrimDashboard = () => {
   const { user, logout } = useAuth();
