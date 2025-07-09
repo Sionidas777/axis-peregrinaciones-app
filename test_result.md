@@ -150,6 +150,36 @@ backend:
         agent: "testing"
         comment: "Database initialization is working correctly. The database.py file already has code to create a group with fixed ID 'group_001' to match mock data."
 
+  - task: "API Destinations endpoints"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "Found recursion error in get_all_destinations endpoint causing 500 Internal Server Error"
+      - working: true
+        agent: "testing"
+        comment: "Fixed recursion error by renaming the endpoint function to get_all_destinations_endpoint to avoid name collision with the database function"
+
+  - task: "API Spiritual Content endpoints"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "Found recursion error in get_all_spiritual_content endpoint causing 500 Internal Server Error"
+      - working: true
+        agent: "testing"
+        comment: "Fixed recursion error by renaming the endpoint function to get_all_spiritual_content_endpoint to avoid name collision with the database function"
+
 frontend:
   - task: "Login component integration"
     implemented: false
