@@ -240,7 +240,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Sistema completamente integrado - Backend y Frontend funcionando con API real"
+    - "AdminDashboard API integration - Error al guardar itinerarios"
+    - "Itinerary saving functionality"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
