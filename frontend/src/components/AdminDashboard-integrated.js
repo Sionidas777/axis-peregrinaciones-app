@@ -195,6 +195,48 @@ const AdminDashboard = ({ user, onLogout }) => {
     }
   };
 
+  // Pilgrim operations
+  const handleCreatePilgrim = () => {
+    setEditPilgrimModal({ isOpen: true, pilgrim: null });
+  };
+
+  const handleEditPilgrim = (pilgrim) => {
+    setEditPilgrimModal({ isOpen: true, pilgrim: pilgrim });
+  };
+
+  const handleSavePilgrim = async (pilgrimData) => {
+    try {
+      if (editPilgrimModal.pilgrim) {
+        // Update existing pilgrim - this would need a specific update endpoint
+        // For now, we'll refresh the data
+        await loadAdminData();
+      } else {
+        // Create new pilgrim using the register endpoint
+        await authAPI.register(pilgrimData);
+        // Refresh pilgrims data
+        const pilgrimsData = await usersAPI.getAll();
+        setPilgrims(pilgrimsData.filter(user => user.role === 'pilgrim'));
+      }
+      setEditPilgrimModal({ isOpen: false, pilgrim: null });
+    } catch (error) {
+      console.error('Error saving pilgrim:', error);
+      setError(handleAPIError(error));
+    }
+  };
+
+  const handleDeletePilgrim = async (pilgrimId) => {
+    if (window.confirm('¿Estás seguro de que quieres eliminar este peregrino?')) {
+      try {
+        // This would need a delete user endpoint
+        // For now, we'll show an alert
+        alert('Funcionalidad de eliminación de peregrinos pendiente de implementar');
+      } catch (error) {
+        console.error('Error deleting pilgrim:', error);
+        setError(handleAPIError(error));
+      }
+    }
+  };
+
   // Filter functions
   const filteredGroups = groups.filter(group => 
     group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
