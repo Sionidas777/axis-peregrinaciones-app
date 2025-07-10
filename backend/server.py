@@ -322,6 +322,80 @@ async def get_users_by_group(group_id: str, current_user: User = Depends(get_cur
         created_at=user.created_at
     ) for user in users]
 
+@api_router.put("/users/{user_id}", response_model=UserResponse)
+async def update_user_endpoint(user_id: str, user_data: UserUpdate, current_user: User = Depends(get_current_admin)):
+    """Update user (admin only)"""
+    # Check if user exists
+    user_to_update = await get_user_by_id(user_id)
+    if not user_to_update:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    
+    # Prepare update data
+    update_data = {}
+    
+    if user_data.name is not None:
+        update_data["name"] = user_data.name
+    
+    if user_data.email is not None:
+        # Check if email is already taken by another user
+        existing_user = await get_user_by_email(user_data.email)
+        if existing_user and existing_user.id != user_id:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email already registered by another user"
+            )
+        update_data["email"] = user_data.email
+    
+    if user_data.password is not None:
+        from .auth import get_password_hash
+        update_data["password_hash"] = get_password_hash(user_data.password)
+    
+    # Handle group changes
+    old_group_id = user_to_update.group_id
+    new_group_id = user_data.group_id
+    
+    if new_group_id != old_group_id:
+        # Remove from old group if exists
+        if old_group_id and user_to_update.role == UserRole.PILGRIM:
+            try:
+                await remove_pilgrim_from_group(old_group_id, user_id)
+            except Exception as e:
+                print(f"Warning: Could not remove pilgrim from old group: {e}")
+        
+        # Add to new group if specified
+        if new_group_id and user_to_update.role == UserRole.PILGRIM:
+            try:
+                pilgrim_info = PilgrimInfo(
+                    id=user_to_update.id,
+                    name=user_data.name or user_to_update.name,
+                    email=user_data.email or user_to_update.email
+                )
+                await add_pilgrim_to_group(new_group_id, pilgrim_info)
+            except Exception as e:
+                print(f"Warning: Could not add pilgrim to new group: {e}")
+        
+        update_data["group_id"] = new_group_id
+    
+    # Update user
+    updated_user = await update_user(user_id, update_data)
+    if not updated_user:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to update user"
+        )
+    
+    return UserResponse(
+        id=updated_user.id,
+        email=updated_user.email,
+        name=updated_user.name,
+        role=updated_user.role,
+        group_id=updated_user.group_id,
+        created_at=updated_user.created_at
+    )
+
 @api_router.delete("/users/{user_id}")
 async def delete_user_endpoint(user_id: str, current_user: User = Depends(get_current_admin)):
     """Delete user (admin only)"""
