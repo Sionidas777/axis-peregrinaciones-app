@@ -304,7 +304,7 @@ const AdminDashboard = ({ user, onLogout }) => {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
           <Card className="bg-white/95 backdrop-blur-sm shadow-xl border-0">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium text-gray-600">Grupos Activos</CardTitle>
