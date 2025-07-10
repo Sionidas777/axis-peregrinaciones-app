@@ -248,6 +248,11 @@ const AdminDashboard = ({ user, onLogout }) => {
     destination.country.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const filteredPilgrims = pilgrims.filter(pilgrim =>
+    pilgrim.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    pilgrim.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
