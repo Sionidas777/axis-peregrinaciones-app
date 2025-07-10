@@ -227,9 +227,13 @@ const AdminDashboard = ({ user, onLogout }) => {
   const handleDeletePilgrim = async (pilgrimId) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar este peregrino?')) {
       try {
-        // This would need a delete user endpoint
-        // For now, we'll show an alert
-        alert('Funcionalidad de eliminación de peregrinos pendiente de implementar');
+        await usersAPI.delete(pilgrimId);
+        // Refresh pilgrims data
+        const pilgrimsData = await usersAPI.getAll();
+        setPilgrims(pilgrimsData.filter(user => user.role === 'pilgrim'));
+        
+        // Show success message
+        alert('Peregrino eliminado exitosamente');
       } catch (error) {
         console.error('Error deleting pilgrim:', error);
         setError(handleAPIError(error));
