@@ -20,10 +20,11 @@ import {
 } from 'lucide-react';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { groupsAPI, itinerariesAPI, destinationsAPI, spiritualAPI, handleAPIError } from '../services/api';
+import { groupsAPI, itinerariesAPI, destinationsAPI, spiritualAPI, authAPI, usersAPI, handleAPIError } from '../services/api';
 import EditGroupModal from './EditGroupModal';
 import EditItineraryModal from './EditItineraryModal';
 import EditDestinationModal from './EditDestinationModal';
+import EditPilgrimModal from './EditPilgrimModal';
 import Footer from './Footer';
 
 const AdminDashboard = ({ user, onLogout }) => {
