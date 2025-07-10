@@ -322,6 +322,42 @@ async def get_users_by_group(group_id: str, current_user: User = Depends(get_cur
         created_at=user.created_at
     ) for user in users]
 
+@api_router.delete("/users/{user_id}")
+async def delete_user(user_id: str, current_user: User = Depends(get_current_admin)):
+    """Delete user (admin only)"""
+    # Check if user exists
+    user_to_delete = await get_user_by_id(user_id)
+    if not user_to_delete:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    
+    # Prevent admin from deleting themselves
+    if user_to_delete.id == current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot delete your own account"
+        )
+    
+    # If user is a pilgrim, remove them from their group
+    if user_to_delete.role == UserRole.PILGRIM and user_to_delete.group_id:
+        try:
+            await remove_pilgrim_from_group(user_to_delete.group_id, user_to_delete.id)
+        except Exception as e:
+            # Log error but don't fail the deletion
+            print(f"Warning: Could not remove pilgrim from group: {e}")
+    
+    # Delete the user
+    success = await delete_user_from_db(user_id)
+    if not success:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to delete user"
+        )
+    
+    return {"message": "User deleted successfully"}
+
 # Test endpoint
 @api_router.get("/")
 async def root():
