@@ -199,6 +199,12 @@ const EditItineraryModal = ({ itinerary, onSave, onClose, isOpen, groups }) => {
           </DialogDescription>
         </DialogHeader>
 
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+            {error}
+          </div>
+        )}
+
         <Tabs defaultValue="basic" className="w-full">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="basic">Básico</TabsTrigger>
