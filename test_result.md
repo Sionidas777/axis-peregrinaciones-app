@@ -258,8 +258,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Backend itinerary functionality verified and working"
-  stuck_tasks: []
+    - "AdminDashboard API integration - Fix React child error in error handling"
+  stuck_tasks:
+    - "AdminDashboard API integration"
   test_all: false
   test_priority: "high_first"
 
