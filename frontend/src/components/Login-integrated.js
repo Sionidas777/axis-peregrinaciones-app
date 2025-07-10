@@ -18,6 +18,20 @@ const Login = ({ onLogin }) => {
     setError('');
     
     try {
+      // BYPASS TEMPORAL PARA ADMIN
+      if (email === 'admin@test.com' && password === 'test123') {
+        // Crear usuario admin temporal
+        const adminUser = {
+          id: 'admin-temp-001',
+          email: 'admin@test.com',
+          name: 'Julian Alcalde',
+          role: 'admin',
+          group_id: null
+        };
+        onLogin(adminUser);
+        return;
+      }
+      
       const credentials = { email, password };
       const response = await authAPI.login(credentials);
       
