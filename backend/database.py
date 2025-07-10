@@ -131,20 +131,20 @@ async def create_itinerary(itinerary_data: ItineraryCreate) -> Itinerary:
 async def get_itinerary_by_id(itinerary_id: str) -> Optional[Itinerary]:
     itinerary_doc = await itineraries_collection.find_one({"id": itinerary_id})
     if itinerary_doc:
-        return Itinerary(**itinerary_doc)
+        return Itinerary.parse_obj(itinerary_doc)
     return None
 
 async def get_itinerary_by_group_id(group_id: str) -> Optional[Itinerary]:
     itinerary_doc = await itineraries_collection.find_one({"group_id": group_id})
     if itinerary_doc:
-        return Itinerary(**itinerary_doc)
+        return Itinerary.parse_obj(itinerary_doc)
     return None
 
 async def get_all_itineraries() -> List[Itinerary]:
     cursor = itineraries_collection.find({})
     itineraries = []
     async for itinerary_doc in cursor:
-        itineraries.append(Itinerary(**itinerary_doc))
+        itineraries.append(Itinerary.parse_obj(itinerary_doc))
     return itineraries
 
 async def update_itinerary(itinerary_id: str, update_data: ItineraryUpdate) -> Optional[Itinerary]:
