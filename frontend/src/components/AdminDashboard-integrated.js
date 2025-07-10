@@ -552,6 +552,73 @@ const AdminDashboard = ({ user, onLogout }) => {
               </CardContent>
             </Card>
           </TabsContent>
+
+          <TabsContent value="peregrinos" className="mt-6">
+            <Card className="bg-white/95 backdrop-blur-sm shadow-xl border-0">
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <CardTitle>Gestión de Peregrinos</CardTitle>
+                  <Button onClick={handleCreatePilgrim} className="bg-indigo-600 hover:bg-indigo-700">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Nuevo Peregrino
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="mb-4">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Input
+                      placeholder="Buscar peregrinos..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  {filteredPilgrims.map(pilgrim => (
+                    <div key={pilgrim.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex-1">
+                        <h4 className="font-medium">{pilgrim.name}</h4>
+                        <p className="text-sm text-gray-600">{pilgrim.email}</p>
+                        {pilgrim.group_id && (
+                          <p className="text-xs text-gray-500">
+                            Grupo: {groups.find(g => g.id === pilgrim.group_id)?.name || pilgrim.group_id}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleEditPilgrim(pilgrim)}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleDeletePilgrim(pilgrim.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {filteredPilgrims.length === 0 && (
+                    <div className="text-center py-8 text-gray-500">
+                      {pilgrims.length === 0 
+                        ? 'No hay peregrinos registrados. Haz clic en "Nuevo Peregrino" para comenzar.'
+                        : 'No se encontraron peregrinos que coincidan con tu búsqueda.'
+                      }
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
       </main>
 
