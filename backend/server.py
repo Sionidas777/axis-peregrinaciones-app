@@ -323,7 +323,7 @@ async def get_users_by_group(group_id: str, current_user: User = Depends(get_cur
     ) for user in users]
 
 @api_router.delete("/users/{user_id}")
-async def delete_user(user_id: str, current_user: User = Depends(get_current_admin)):
+async def delete_user_endpoint(user_id: str, current_user: User = Depends(get_current_admin)):
     """Delete user (admin only)"""
     # Check if user exists
     user_to_delete = await get_user_by_id(user_id)
