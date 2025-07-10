@@ -44,6 +44,12 @@ class UserResponse(BaseModel):
     group_id: Optional[str] = None
     created_at: datetime
 
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    password: Optional[str] = None
+    group_id: Optional[str] = None
+
 # Pilgrimage Group Models
 class PilgrimInfo(BaseModel):
     id: str
