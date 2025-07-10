@@ -205,6 +205,11 @@ export const usersAPI = {
     const response = await api.delete(`/users/${userId}`);
     return response.data;
   },
+
+  update: async (userId, userData) => {
+    const response = await api.put(`/users/${userId}`, userData);
+    return response.data;
+  },
 };
 
 // Error handling utility
