@@ -213,11 +213,11 @@ frontend:
   
   - task: "AdminDashboard API integration"
     implemented: true
-    working: true
+    working: false
     file: "frontend/src/components/AdminDashboard-integrated.js"
-    stuck_count: 2
+    stuck_count: 3
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: false
         agent: "main"
@@ -234,6 +234,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "Backend itinerary functionality fully tested and working. Fixed critical Pydantic alias issue in database.py that was causing 500 errors during itinerary creation and retrieval. All CRUD operations (GET, POST, PUT, DELETE) for itineraries now work correctly. Data structure consistency verified - fields group_name, daily_schedule, and not_included are properly mapped. No recursion or serialization issues found. The backend is ready for frontend integration."
+      - working: false
+        agent: "testing"
+        comment: "CRITICAL ISSUE CONFIRMED: The 'Objects are not valid as a React child' error is still occurring when saving itineraries. Admin login works correctly and dashboard loads properly. The error happens when clicking 'Crear Itinerario' - backend returns 422 validation error and frontend tries to render the error object directly as React child. Error object has keys {type, loc, msg, input, url} which are Pydantic validation errors. The issue is in error handling - the frontend is not properly handling validation error responses from the backend and is trying to render the error object instead of extracting the error message."
 
   - task: "API Itinerary endpoints"
     implemented: true
