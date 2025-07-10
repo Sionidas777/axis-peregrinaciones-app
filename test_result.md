@@ -255,8 +255,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "AdminDashboard API integration - Error al guardar itinerarios"
-    - "Itinerary saving functionality"
+    - "Backend itinerary functionality verified and working"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
