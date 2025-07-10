@@ -24,6 +24,22 @@ const EditItineraryModal = ({ itinerary, onSave, onClose, isOpen }) => {
   const [newNotIncluded, setNewNotIncluded] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // Reinitialize form data when itinerary changes
+  useEffect(() => {
+    if (isOpen) {
+      setFormData({
+        group_name: itinerary?.group_name || '',
+        flights: itinerary?.flights || {
+          departure: { from: '', to: '', date: '', time: '', airline: '', flight_number: '' },
+          return: { from: '', to: '', date: '', time: '', airline: '', flight_number: '' }
+        },
+        included: itinerary?.included || [],
+        not_included: itinerary?.not_included || [],
+        daily_schedule: itinerary?.daily_schedule || []
+      });
+    }
+  }, [itinerary, isOpen]);
+
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
