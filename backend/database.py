@@ -353,54 +353,98 @@ async def initialize_database():
     # Create sample spiritual content
     spiritual_contents = [
         SpiritualContentCreate(
-            category="liturgy_of_hours",
-            title="Laudes - Oración de la Mañana",
-            description="Oración matutina de la Liturgia de las Horas",
-            content={
-                "antiphon": "Bendito seas, Señor, Dios de Israel, nuestro Padre",
-                "psalm": "Salmo 95 - Invitatorio",
-                "reading": "Lectura breve",
-                "canticle": "Cántico de Zacarías",
-                "prayer": "Oración final"
-            }
-        ),
-        SpiritualContentCreate(
             category="rosary",
             title="Santo Rosario",
             description="Misterios del Rosario para la meditación diaria",
             content={
+                "introduction": "El Santo Rosario es una oración contemplativa que nos ayuda a meditar en los misterios de la vida de Jesús y María.",
+                "how_to_pray": "Se reza con el rosario, meditando en los misterios mientras se recitan las Ave Marías.",
                 "joyful_mysteries": [
-                    "La Anunciación",
-                    "La Visitación",
-                    "El Nacimiento de Jesús",
-                    "La Presentación en el Templo",
-                    "El Niño Jesús perdido y hallado en el Templo"
+                    "1. La Anunciación del Ángel a María",
+                    "2. La Visitación de María a su prima Isabel",
+                    "3. El Nacimiento de Jesús en Belén",
+                    "4. La Presentación del Niño Jesús en el Templo",
+                    "5. El Niño Jesús perdido y hallado en el Templo"
                 ],
                 "sorrowful_mysteries": [
-                    "La Agonía en el Huerto",
-                    "La Flagelación",
-                    "La Coronación de Espinas",
-                    "El Camino del Calvario",
-                    "La Crucifixión y Muerte"
+                    "1. La Agonía de Jesús en el Huerto de Getsemaní",
+                    "2. La Flagelación del Señor",
+                    "3. La Coronación de Espinas",
+                    "4. Jesús con la Cruz a cuestas camino del Calvario",
+                    "5. La Crucifixión y Muerte de Nuestro Señor"
                 ],
                 "glorious_mysteries": [
-                    "La Resurrección",
-                    "La Ascensión",
-                    "La Venida del Espíritu Santo",
-                    "La Asunción de María",
-                    "La Coronación de María"
+                    "1. La Resurrección del Señor",
+                    "2. La Ascensión del Señor a los Cielos",
+                    "3. La Venida del Espíritu Santo sobre los Apóstoles",
+                    "4. La Asunción de María Santísima a los Cielos",
+                    "5. La Coronación de María Santísima como Reina del Cielo y de la Tierra"
+                ],
+                "luminous_mysteries": [
+                    "1. El Bautismo de Jesús en el Jordán",
+                    "2. Las Bodas de Caná",
+                    "3. El Anuncio del Reino de Dios",
+                    "4. La Transfiguración del Señor",
+                    "5. La Institución de la Eucaristía"
                 ]
             }
         ),
         SpiritualContentCreate(
-            category="daily_prayers",
-            title="Oraciones del Peregrino",
+            category="angelus",
+            title="El Ángelus",
+            description="Oración mariana tradicional que se reza tres veces al día",
+            content={
+                "introduction": "El Ángelus es una oración que conmemora la Anunciación del Ángel Gabriel a la Virgen María. Se reza tradicionalmente al amanecer, al mediodía y al atardecer.",
+                "when_to_pray": "Se reza al amanecer (6:00 AM), al mediodía (12:00 PM) y al atardecer (6:00 PM)",
+                "prayer": {
+                    "verse1": "V. El Ángel del Señor anunció a María.\nR. Y concibió por obra del Espíritu Santo.",
+                    "ave_maria1": "Dios te salve, María...",
+                    "verse2": "V. He aquí la esclava del Señor.\nR. Hágase en mí según tu palabra.",
+                    "ave_maria2": "Dios te salve, María...",
+                    "verse3": "V. Y el Verbo se hizo carne.\nR. Y habitó entre nosotros.",
+                    "ave_maria3": "Dios te salve, María...",
+                    "final_prayer": "V. Ruega por nosotros, Santa Madre de Dios.\nR. Para que seamos dignos de alcanzar las promesas de nuestro Señor Jesucristo.\n\nOREMOS: Infunde, Señor, tu gracia en nuestras almas, para que los que, por el anuncio del Ángel, hemos conocido la Encarnación de tu Hijo Jesucristo, por su Pasión y Cruz seamos llevados a la gloria de su Resurrección. Por el mismo Jesucristo nuestro Señor. Amén."
+                }
+            }
+        ),
+        SpiritualContentCreate(
+            category="morning_prayer",
+            title="Oración de Inicio del Día",
+            description="Oración para comenzar el día encomendándose a Dios",
+            content={
+                "introduction": "Oración para ofrecer el nuevo día a Dios y pedirle su bendición y protección.",
+                "prayer": "Señor Dios, Padre celestial, al despertar a este nuevo día que Tú me concedes, te doy gracias por el descanso de la noche y por la vida que me das.\n\nTe ofrezco este día: mis pensamientos, palabras y obras. Que todo lo que haga sea para tu mayor gloria y para el bien de mis hermanos.\n\nDame sabiduría para tomar buenas decisiones, fortaleza para enfrentar las dificultades, y caridad para amar como Tú me amas.\n\nProtégeme de todo mal y pecado. Que tu Espíritu Santo me guíe en todo momento.\n\nPor intercesión de María Santísima, mi Madre del Cielo, y de mi Ángel de la Guarda.\n\nAmén.",
+                "additional_prayers": {
+                    "offering": "Oh Jesús, por el Inmaculado Corazón de María, te ofrezco mis oraciones, trabajos, gozos y sufrimientos de este día, en reparación de nuestros pecados y por las intenciones del Santo Padre. Amén.",
+                    "protection": "Ángel de Dios, que eres mi custodio, pues la bondad divina me ha encomendado a ti, ilumíname, guárdame, rige y gobiérname. Amén."
+                }
+            }
+        ),
+        SpiritualContentCreate(
+            category="evening_prayer",
+            title="Oración de Finalización del Día",
+            description="Oración para agradecer por el día y pedir perdón antes del descanso",
+            content={
+                "introduction": "Oración para el final del día, agradeciendo a Dios por sus bendiciones y pidiendo perdón por nuestras faltas.",
+                "examination": "Breve examen de conciencia:\n- ¿He ofendido a Dios con pensamientos, palabras u obras?\n- ¿He cumplido con mis deberes?\n- ¿He sido caritativo con mi prójimo?\n- ¿He dado buen ejemplo cristiano?",
+                "prayer": "Señor Dios, al terminar este día, vengo ante Ti con un corazón agradecido.\n\nTe doy gracias por todas las bendiciones que he recibido: por la vida, la salud, el trabajo, la familia, los amigos y por tu constante amor y misericordia.\n\nTe pido perdón por todas las faltas que he cometido hoy, por las veces que no he correspondido a tu amor, por las oportunidades perdidas de hacer el bien.\n\nPor tu infinita misericordia, perdona mis pecados y ayúdame a ser mejor mañana.\n\nProtege durante la noche a mi familia y a todos mis seres queridos. Concede el descanso eterno a los fieles difuntos y fortalece a los que sufren.\n\nEn tus manos encomiendo mi alma. Que María Santísima me cubra con su manto maternal.\n\nAmén.",
+                "final_prayers": {
+                    "act_of_contrition": "Señor mío Jesucristo, Dios y hombre verdadero, me pesa de todo corazón haberte ofendido, porque eres infinitamente bueno y amable y el pecado te desagrada. Propongo firmemente, con el auxilio de tu gracia, enmendarme y alejarme de las ocasiones de pecar, confesarme y cumplir la penitencia. Confío en que me perdonarás por tu infinita misericordia. Amén.",
+                    "consecration_to_mary": "Oh Señora mía, oh Madre mía, yo me ofrezco todo a Ti, y en prueba de mi filial afecto, te consagro en este día mis ojos, mis oídos, mi lengua, mi corazón; en una palabra, todo mi ser. Ya que soy todo tuyo, oh Madre de bondad, guárdame y defiéndeme como cosa y posesión tuya. Amén."
+                }
+            }
+        ),
+        SpiritualContentCreate(
+            category="pilgrim_prayer",
+            title="Oración del Peregrino",
             description="Oraciones especiales para el tiempo de peregrinación",
             content={
-                "morning_prayer": "Señor, te entrego este día de peregrinación. Que mis pasos sigan los tuyos y mi corazón se abra a tu gracia.",
-                "evening_prayer": "Gracias, Señor, por este día santo. Que las experiencias vividas fructifiquen en mi alma.",
-                "travel_prayer": "Acompaña, Señor, nuestro camino. Que María, Reina de los Peregrinos, nos proteja.",
-                "unity_prayer": "Señor, bendice a nuestro grupo de peregrinos. Que seamos uno en Ti como Tú eres uno con el Padre."
+                "introduction": "Oraciones especiales para acompañar al peregrino en su caminar hacia los lugares santos.",
+                "main_prayer": "Señor Jesús, como los discípulos de Emaús, camino contigo buscando tu rostro en los lugares santos donde pisaste esta tierra.\n\nHaz que en esta peregrinación mi corazón se abra a tu palabra, mis ojos te reconozcan en el hermano que camina a mi lado, y mis pies sigan fielmente tus huellas.\n\nQue cada paso sea una oración, cada lugar visitado sea un encuentro contigo, y cada momento compartido sea una oportunidad de crecer en santidad.\n\nMadre María, Reina de los Peregrinos, acompáñanos en este camino santo. Protégenos de todo peligro y ayúdanos a llevar tu hijo Jesús en nuestros corazones.\n\nSan José, protector de la Sagrada Familia, cuida de nosotros como cuidaste de Jesús y María en sus viajes.\n\nQue esta peregrinación transforme nuestras vidas y nos haga mejores cristianos.\n\nAmén.",
+                "travel_prayer": "Señor, bendice nuestro viaje. Que los ángeles nos acompañen por el camino, que María Santísima nos proteja, y que lleguemos con bien a nuestro destino. Amén.",
+                "unity_prayer": "Señor Jesús, bendice a nuestro grupo de peregrinos. Que seamos uno en Ti como Tú eres uno con el Padre. Ayúdanos a ser pacientes unos con otros, a compartir nuestras alegrías y a apoyarnos en las dificultades. Que el amor fraterno sea el signo de que somos tus discípulos. Amén.",
+                "holy_places_prayer": "Jesús, al visitar estos lugares santos donde viviste, sufriste y resucitaste, aumenta mi fe, fortalece mi esperanza y enciende mi caridad. Que cada piedra me hable de tu amor, cada rincón me recuerde tu sacrificio, y cada momento me acerque más a Ti. Amén.",
+                "thanksgiving_prayer": "Gracias, Señor, por este día santo. Que las experiencias vividas fructifiquen en mi alma y me ayuden a ser mejor cristiano al regresar a casa. Que este viaje no termine aquí, sino que sea el comienzo de una vida más santa y comprometida contigo. Amén."
             }
         )
     ]
