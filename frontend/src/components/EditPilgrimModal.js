@@ -176,15 +176,15 @@ const EditPilgrimModal = ({ pilgrim, onSave, onClose, isOpen, groups }) => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="group_id">Grupo *</Label>
+              <Label htmlFor="group_id">{pilgrim ? 'Grupo' : 'Grupo *'}</Label>
               <select
                 id="group_id"
                 value={formData.group_id}
                 onChange={(e) => handleInputChange('group_id', e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                required
+                required={!pilgrim}
               >
-                <option value="">Selecciona un grupo</option>
+                <option value="">{pilgrim ? 'Sin grupo asignado' : 'Selecciona un grupo'}</option>
                 {groups?.map(group => (
                   <option key={group.id} value={group.id}>
                     {group.name}
