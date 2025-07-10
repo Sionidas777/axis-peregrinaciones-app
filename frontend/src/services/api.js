@@ -207,6 +207,21 @@ export const handleAPIError = (error) => {
       return 'No tienes permisos para realizar esta acción.';
     } else if (status === 404) {
       return 'Recurso no encontrado.';
+    } else if (status === 422) {
+      // Handle Pydantic validation errors
+      if (Array.isArray(data)) {
+        // Multiple validation errors
+        return data.map(err => `${err.loc ? err.loc.join('.') : 'Campo'}: ${err.msg}`).join(', ');
+      } else if (data.detail) {
+        // Single validation error or FastAPI HTTPException
+        if (Array.isArray(data.detail)) {
+          return data.detail.map(err => `${err.loc ? err.loc.join('.') : 'Campo'}: ${err.msg}`).join(', ');
+        } else {
+          return typeof data.detail === 'string' ? data.detail : 'Error de validación.';
+        }
+      } else {
+        return 'Error de validación de datos.';
+      }
     } else if (status === 500) {
       return 'Error interno del servidor. Por favor, inténtalo más tarde.';
     } else {
