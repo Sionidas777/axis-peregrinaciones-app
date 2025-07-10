@@ -57,6 +57,12 @@ const EditPilgrimModal = ({ pilgrim, onSave, onClose, isOpen, groups }) => {
       return;
     }
     
+    if (!formData.group_id) {
+      setError('Debe asignar un grupo al peregrino');
+      setIsLoading(false);
+      return;
+    }
+    
     if (!pilgrim && !formData.password.trim()) {
       setError('La contraseña es requerida para nuevos peregrinos');
       setIsLoading(false);
