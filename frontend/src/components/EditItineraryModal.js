@@ -24,6 +24,7 @@ const EditItineraryModal = ({ itinerary, onSave, onClose, isOpen, groups }) => {
   const [newIncluded, setNewIncluded] = useState('');
   const [newNotIncluded, setNewNotIncluded] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   // Reinitialize form data when itinerary changes
   useEffect(() => {
