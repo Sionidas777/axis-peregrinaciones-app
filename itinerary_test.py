@@ -27,15 +27,15 @@ test_itinerary = {
     "group_name": "Peregrinación a Tierra Santa 2025",
     "flights": {
         "departure": {
-            "from": "Madrid",
+            "from_location": "Madrid",
             "to": "Tel Aviv",
             "date": "2025-03-15",
             "time": "10:00",
             "airline": "Iberia",
             "flight_number": "IB3878"
         },
-        "return": {
-            "from": "Tel Aviv",
+        "return_flight": {
+            "from_location": "Tel Aviv",
             "to": "Madrid",
             "date": "2025-03-22",
             "time": "18:30",
