@@ -344,15 +344,26 @@ const AdminDashboard = ({ user, onLogout }) => {
               <p className="text-xs text-gray-500">Recursos</p>
             </CardContent>
           </Card>
+
+          <Card className="bg-white/95 backdrop-blur-sm shadow-xl border-0">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium text-gray-600">Peregrinos</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-indigo-600">{pilgrims.length}</div>
+              <p className="text-xs text-gray-500">Registrados</p>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Navigation Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-4 bg-white/95 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-5 bg-white/95 backdrop-blur-sm">
             <TabsTrigger value="resumen">Resumen</TabsTrigger>
             <TabsTrigger value="grupos">Grupos</TabsTrigger>
             <TabsTrigger value="itinerarios">Itinerarios</TabsTrigger>
             <TabsTrigger value="destinos">Destinos</TabsTrigger>
+            <TabsTrigger value="peregrinos">Peregrinos</TabsTrigger>
           </TabsList>
 
           <TabsContent value="resumen" className="mt-6">
