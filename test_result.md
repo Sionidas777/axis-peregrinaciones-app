@@ -241,6 +241,18 @@ frontend:
         agent: "testing"
         comment: "SUCCESS! The 'Objects are not valid as a React child' error has been completely fixed. Comprehensive testing completed: 1) Admin login works perfectly with admin@pilgrimageapp.com/admin123 credentials; 2) Admin dashboard loads correctly showing all stats (3 groups, 1 itinerary, 5 destinations, 0 spiritual content); 3) Itinerarios tab navigation works; 4) 'Nuevo Itinerario' button opens EditItineraryModal successfully; 5) Group selector is present and working with 4 group options; 6) Group selection auto-fills group name correctly; 7) Save functionality works perfectly - successfully created new itinerary (count increased from 1 to 2); 8) NO 'Objects are not valid as a React child' error found anywhere; 9) No error messages displayed; 10) Modal closes properly after save. The handleAPIError function in api.js is now properly handling Pydantic validation errors and the EditItineraryModal error handling is working correctly. All corrections applied by main agent have been successful."
 
+  - task: "Admin pilgrim registration functionality"
+    implemented: true
+    working: false
+    file: "frontend/src/components/AdminDashboard-integrated.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "Implemented admin-only pilgrim registration functionality. Created EditPilgrimModal.js for registering new pilgrims with fields for name, email, password, and group assignment. Added new 'Peregrinos' tab to AdminDashboard with CRUD interface. Updated dashboard to show pilgrim count and load pilgrim data. Uses authAPI.register for creating new pilgrims and usersAPI.getAll for loading existing pilgrims."
+
   - task: "API Itinerary endpoints"
     implemented: true
     working: true
