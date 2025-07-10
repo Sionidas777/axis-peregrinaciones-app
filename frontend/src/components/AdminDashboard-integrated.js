@@ -646,6 +646,14 @@ const AdminDashboard = ({ user, onLogout }) => {
         onClose={() => setEditDestinationModal({ isOpen: false, destination: null })}
         onSave={handleSaveDestination}
       />
+      
+      <EditPilgrimModal 
+        isOpen={editPilgrimModal.isOpen}
+        pilgrim={editPilgrimModal.pilgrim}
+        groups={groups}
+        onClose={() => setEditPilgrimModal({ isOpen: false, pilgrim: null })}
+        onSave={handleSavePilgrim}
+      />
     </div>
   );
 };
