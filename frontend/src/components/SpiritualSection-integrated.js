@@ -393,8 +393,6 @@ const SpiritualSection = ({ spiritualContent }) => {
 };
 
 export default SpiritualSection;
-
-  if (!spiritualContent || spiritualContent.length === 0) {
     return (
       <div className="space-y-6">
         <div className="text-center space-y-2">
