@@ -29,6 +29,7 @@ const EditItineraryModal = ({ itinerary, onSave, onClose, isOpen, groups }) => {
   useEffect(() => {
     if (isOpen) {
       setFormData({
+        group_id: itinerary?.group_id || '',
         group_name: itinerary?.group_name || '',
         flights: itinerary?.flights || {
           departure: { from: '', to: '', date: '', time: '', airline: '', flight_number: '' },
