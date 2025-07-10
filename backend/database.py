@@ -46,6 +46,14 @@ async def get_user_by_id(user_id: str) -> Optional[User]:
         return User(**user_doc)
     return None
 
+async def get_all_users_from_db() -> List[User]:
+    """Get all users from database"""
+    cursor = users_collection.find({})
+    users = []
+    async for user_doc in cursor:
+        users.append(User(**user_doc))
+    return users
+
 async def get_users_by_group_id(group_id: str) -> List[User]:
     cursor = users_collection.find({"group_id": group_id})
     users = []
