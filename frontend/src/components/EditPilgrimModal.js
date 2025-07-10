@@ -82,10 +82,8 @@ const EditPilgrimModal = ({ pilgrim, onSave, onClose, isOpen, groups }) => {
         submitData.password = formData.password;
       }
       
-      // Include group_id if selected
-      if (formData.group_id) {
-        submitData.group_id = formData.group_id;
-      }
+      // Always include group_id (can be null to remove from group)
+      submitData.group_id = formData.group_id || null;
       
       if (onSave) {
         await onSave(submitData);
