@@ -128,22 +128,13 @@ created_ids = {
     "itinerary_id": None
 }
 
-# Test results
+# Test results for pilgrim registration functionality
 test_results = {
-    "auth_register": {"success": False, "details": ""},
-    "auth_login": {"success": False, "details": ""},
-    "auth_me": {"success": False, "details": ""},
-    "groups_get_all": {"success": False, "details": ""},
-    "groups_get_one": {"success": False, "details": ""},
-    "groups_create": {"success": False, "details": ""},
-    "groups_update": {"success": False, "details": ""},
-    "itineraries_get": {"success": False, "details": ""},
-    "itineraries_create": {"success": False, "details": ""},
-    "itineraries_update": {"success": False, "details": ""},
-    "destinations_get_all": {"success": False, "details": ""},
-    "destinations_get_one": {"success": False, "details": ""},
-    "destinations_create": {"success": False, "details": ""},
-    "error_handling": {"success": False, "details": ""}
+    "pilgrim_registration_get_users": {"success": False, "details": ""},
+    "pilgrim_registration_register": {"success": False, "details": ""},
+    "pilgrim_registration_validation": {"success": False, "details": ""},
+    "pilgrim_registration_group_integration": {"success": False, "details": ""},
+    "pilgrim_registration_error_handling": {"success": False, "details": ""}
 }
 
 def print_separator():
