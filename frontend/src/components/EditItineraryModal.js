@@ -7,6 +7,7 @@ import { Textarea } from './ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Calendar, Plane, Plus, X } from 'lucide-react';
+import { handleAPIError } from '../services/api';
 
 const EditItineraryModal = ({ itinerary, onSave, onClose, isOpen, groups }) => {
   const [formData, setFormData] = useState({
