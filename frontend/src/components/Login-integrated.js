@@ -3,7 +3,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Alert, AlertDescription } from './ui/alert';
 import { authAPI, handleAPIError } from '../services/api';
 
@@ -12,7 +11,6 @@ const Login = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [activeTab, setActiveTab] = useState('peregrino');
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -37,18 +35,6 @@ const Login = ({ onLogin }) => {
     }
   };
 
-  const fillDemoCredentials = (userType) => {
-    if (userType === 'admin') {
-      setEmail('admin@pilgrimageapp.com');
-      setPassword('admin123');
-      setActiveTab('admin');
-    } else {
-      setEmail('maria@email.com');
-      setPassword('password');
-      setActiveTab('peregrino');
-    }
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="absolute inset-0 bg-black/20" style={{
@@ -65,39 +51,61 @@ const Login = ({ onLogin }) => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="peregrino">Peregrino</TabsTrigger>
-              <TabsTrigger value="admin">Administrador</TabsTrigger>
-            </TabsList>
+          <div className="space-y-6">
+            <div className="text-center">
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">Acceso para Peregrinos</h3>
+              <p className="text-sm text-gray-600">
+                Ingresa con las credenciales proporcionadas por tu organizador
+              </p>
+            </div>
+
+            {error && (
+              <Alert className="border-red-200 bg-red-50">
+                <AlertDescription className="text-red-700">
+                  {error}
+                </AlertDescription>
+              </Alert>
+            )}
             
-            <TabsContent value="peregrino" className="space-y-4">
-              {error && (
-                <Alert className="border-red-200 bg-red-50">
-                  <AlertDescription className="text-red-700">
-                    {error}
-                  </AlertDescription>
-                </Alert>
-              )}
-              
-              <form onSubmit={handleLogin} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Correo Electrónico</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="peregrino@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password">Contraseña</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="Ingresa tu contraseña"
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Correo Electrónico</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="tu.email@ejemplo.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Contraseña</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Ingresa tu contraseña"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? 'Iniciando sesión...' : 'Ingresar'}
+              </Button>
+            </form>
+
+            <div className="text-center text-sm text-gray-500">
+              ¿No tienes credenciales? Contacta a tu organizador de peregrinación.
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default Login;
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
