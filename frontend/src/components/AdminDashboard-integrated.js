@@ -56,17 +56,19 @@ const AdminDashboard = ({ user, onLogout }) => {
       setError('');
 
       // Load all data
-      const [groupsData, itinerariesData, destinationsData, spiritualData] = await Promise.all([
+      const [groupsData, itinerariesData, destinationsData, spiritualData, pilgrimsData] = await Promise.all([
         groupsAPI.getAll(),
         itinerariesAPI.getAll(),
         destinationsAPI.getAll(),
-        spiritualAPI.getAll()
+        spiritualAPI.getAll(),
+        usersAPI.getAll()
       ]);
 
       setGroups(groupsData);
       setItineraries(itinerariesData);
       setDestinations(destinationsData);
       setSpiritualContent(spiritualData);
+      setPilgrims(pilgrimsData.filter(user => user.role === 'pilgrim'));
 
     } catch (error) {
       console.error('Error loading admin data:', error);
