@@ -10,14 +10,14 @@ import { Calendar, Plane, Plus, X } from 'lucide-react';
 
 const EditItineraryModal = ({ itinerary, onSave, onClose, isOpen }) => {
   const [formData, setFormData] = useState({
-    group_name: itinerary?.groupName || '',
+    group_name: itinerary?.group_name || '',
     flights: itinerary?.flights || {
       departure: { from: '', to: '', date: '', time: '', airline: '', flight_number: '' },
       return: { from: '', to: '', date: '', time: '', airline: '', flight_number: '' }
     },
     included: itinerary?.included || [],
-    not_included: itinerary?.notIncluded || [],
-    daily_schedule: itinerary?.dailySchedule || []
+    not_included: itinerary?.not_included || [],
+    daily_schedule: itinerary?.daily_schedule || []
   });
 
   const [newIncluded, setNewIncluded] = useState('');
