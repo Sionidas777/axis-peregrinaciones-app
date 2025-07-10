@@ -178,8 +178,6 @@ const EditItineraryModal = ({ itinerary, onSave, onClose, isOpen, groups }) => {
       }
     } catch (error) {
       console.error('Error al guardar itinerario:', error);
-      // Import the error handler from api.js
-      const { handleAPIError } = await import('../services/api');
       const errorMessage = handleAPIError(error);
       setError(errorMessage);
     } finally {
