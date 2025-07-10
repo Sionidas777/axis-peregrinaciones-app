@@ -153,32 +153,370 @@ def print_response(response):
         print(f"Response: {response.text}")
 
 def run_tests():
-    # 1. Test Authentication Endpoints
-    test_auth_register()
-    test_auth_login()
-    test_auth_me()
-    
-    # 2. Test Pilgrimage Groups Endpoints
-    test_groups_create()
-    test_groups_get_all()
-    test_groups_get_one()
-    test_groups_update()
-    
-    # 3. Test Destinations Endpoints
-    test_destinations_create()
-    test_destinations_get_all()
-    test_destinations_get_one()
-    
-    # 4. Test Itinerary Endpoints
-    test_itineraries_create()
-    test_itineraries_get()
-    test_itineraries_update()
-    
-    # 5. Test Error Handling
-    test_error_handling()
+    # Focus on pilgrim registration functionality as requested
+    test_pilgrim_registration_functionality()
     
     # Print summary
     print_test_summary()
+
+def test_pilgrim_registration_functionality():
+    """
+    Comprehensive test for admin pilgrim registration functionality
+    Tests the specific requirements mentioned in the review request
+    """
+    print_test_header("PILGRIM REGISTRATION FUNCTIONALITY - COMPREHENSIVE TEST")
+    
+    # Step 1: Setup admin authentication
+    admin_token = setup_admin_authentication()
+    if not admin_token:
+        return
+    
+    # Step 2: Test GET /api/users endpoint
+    test_get_users_endpoint(admin_token)
+    
+    # Step 3: Test POST /api/auth/register endpoint for pilgrims
+    test_register_pilgrim_endpoint(admin_token)
+    
+    # Step 4: Test validation and error handling
+    test_pilgrim_registration_validation()
+    
+    # Step 5: Test integration with groups
+    test_pilgrim_group_integration(admin_token)
+    
+    # Step 6: Test error handling scenarios
+    test_pilgrim_registration_error_handling()
+
+def setup_admin_authentication():
+    """Setup admin authentication and return token"""
+    print_test_header("SETUP - Admin Authentication")
+    
+    # First try with existing admin credentials
+    existing_admin = {
+        "email": "admin@pilgrimageapp.com",
+        "password": "admin123"
+    }
+    
+    print("Attempting login with existing admin credentials...")
+    response = requests.post(f"{API_URL}/auth/login", json=existing_admin)
+    print_response(response)
+    
+    if response.status_code == 200:
+        token = response.json()["access_token"]
+        print("✅ Admin authentication successful with existing credentials")
+        return token
+    
+    # If existing admin doesn't work, create new admin
+    print("\nExisting admin login failed, creating new admin...")
+    response = requests.post(f"{API_URL}/auth/register", json=admin_user)
+    print_response(response)
+    
+    if response.status_code == 200:
+        print("Admin user created, attempting login...")
+        response = requests.post(f"{API_URL}/auth/login", json={
+            "email": admin_user["email"],
+            "password": admin_user["password"]
+        })
+        print_response(response)
+        
+        if response.status_code == 200:
+            token = response.json()["access_token"]
+            print("✅ Admin authentication successful with new credentials")
+            return token
+    
+    print("❌ Failed to setup admin authentication")
+    return None
+
+def test_get_users_endpoint(admin_token):
+    """Test GET /api/users endpoint"""
+    print_test_header("TEST 1: GET /api/users Endpoint")
+    
+    print("Testing GET /api/users endpoint...")
+    response = requests.get(
+        f"{API_URL}/users",
+        headers={"Authorization": f"Bearer {admin_token}"}
+    )
+    print_response(response)
+    
+    if response.status_code == 200:
+        try:
+            users = response.json()
+            if isinstance(users, list):
+                print(f"✅ Successfully retrieved {len(users)} users")
+                
+                # Check for pilgrims in the list
+                pilgrim_count = 0
+                for user in users:
+                    if user.get("role") == "pilgrim":
+                        pilgrim_count += 1
+                        print(f"Found pilgrim: {user.get('name')} ({user.get('email')})")
+                
+                print(f"Found {pilgrim_count} pilgrims in the user list")
+                test_results["pilgrim_registration_get_users"]["success"] = True
+                test_results["pilgrim_registration_get_users"]["details"] = f"Successfully retrieved {len(users)} users including {pilgrim_count} pilgrims"
+            else:
+                test_results["pilgrim_registration_get_users"]["details"] = f"Expected list but got: {type(users)}"
+        except Exception as e:
+            test_results["pilgrim_registration_get_users"]["details"] = f"Error parsing response: {str(e)}"
+    else:
+        test_results["pilgrim_registration_get_users"]["details"] = f"Failed with status {response.status_code}: {response.text}"
+
+def test_register_pilgrim_endpoint(admin_token):
+    """Test POST /api/auth/register endpoint for pilgrims"""
+    print_test_header("TEST 2: POST /api/auth/register for Pilgrims")
+    
+    # Test data as suggested in the review request
+    test_pilgrim_data = {
+        "name": "Juan Pérez",
+        "email": f"juan.perez.{uuid.uuid4()}@test.com",
+        "password": "testpassword123",
+        "role": "pilgrim",
+        "group_id": "group_001"  # Using existing group from database initialization
+    }
+    
+    print("Registering new pilgrim with complete data...")
+    print(f"Test data: {json.dumps(test_pilgrim_data, indent=2)}")
+    
+    response = requests.post(f"{API_URL}/auth/register", json=test_pilgrim_data)
+    print_response(response)
+    
+    if response.status_code == 200:
+        pilgrim_data = response.json()
+        
+        # Verify all required fields are present and correct
+        checks = [
+            ("id", pilgrim_data.get("id") is not None),
+            ("name", pilgrim_data.get("name") == test_pilgrim_data["name"]),
+            ("email", pilgrim_data.get("email") == test_pilgrim_data["email"]),
+            ("role", pilgrim_data.get("role") == "pilgrim"),
+            ("group_id", pilgrim_data.get("group_id") == test_pilgrim_data["group_id"]),
+            ("created_at", pilgrim_data.get("created_at") is not None)
+        ]
+        
+        all_checks_passed = True
+        for field, check in checks:
+            status = "✅" if check else "❌"
+            print(f"{status} {field}: {pilgrim_data.get(field)}")
+            if not check:
+                all_checks_passed = False
+        
+        if all_checks_passed:
+            print("✅ All field validations passed")
+            
+            # Store the created pilgrim ID for later tests
+            created_ids["pilgrim_id"] = pilgrim_data["id"]
+            
+            # Test that the pilgrim can login
+            print("\nTesting login with newly created pilgrim...")
+            login_response = requests.post(f"{API_URL}/auth/login", json={
+                "email": test_pilgrim_data["email"],
+                "password": test_pilgrim_data["password"]
+            })
+            print_response(login_response)
+            
+            if login_response.status_code == 200:
+                print("✅ Newly created pilgrim can login successfully")
+                test_results["pilgrim_registration_register"]["success"] = True
+                test_results["pilgrim_registration_register"]["details"] = "Successfully registered pilgrim with all required fields and verified login capability"
+            else:
+                test_results["pilgrim_registration_register"]["details"] = f"Pilgrim created but login failed: {login_response.text}"
+        else:
+            test_results["pilgrim_registration_register"]["details"] = "Pilgrim created but some field validations failed"
+    else:
+        test_results["pilgrim_registration_register"]["details"] = f"Failed to register pilgrim: Status {response.status_code}, {response.text}"
+
+def test_pilgrim_registration_validation():
+    """Test validation of required fields"""
+    print_test_header("TEST 3: Validation and Required Fields")
+    
+    validation_tests = [
+        {
+            "name": "Missing name field",
+            "data": {
+                "email": f"test.{uuid.uuid4()}@test.com",
+                "password": "testpassword123",
+                "role": "pilgrim"
+            },
+            "expected_status": 422
+        },
+        {
+            "name": "Missing email field",
+            "data": {
+                "name": "Test User",
+                "password": "testpassword123",
+                "role": "pilgrim"
+            },
+            "expected_status": 422
+        },
+        {
+            "name": "Missing password field",
+            "data": {
+                "name": "Test User",
+                "email": f"test.{uuid.uuid4()}@test.com",
+                "role": "pilgrim"
+            },
+            "expected_status": 422
+        },
+        {
+            "name": "Invalid email format",
+            "data": {
+                "name": "Test User",
+                "email": "invalid-email",
+                "password": "testpassword123",
+                "role": "pilgrim"
+            },
+            "expected_status": 422
+        }
+    ]
+    
+    validation_results = []
+    
+    for test_case in validation_tests:
+        print(f"\nTesting: {test_case['name']}")
+        response = requests.post(f"{API_URL}/auth/register", json=test_case["data"])
+        print_response(response)
+        
+        if response.status_code == test_case["expected_status"]:
+            print(f"✅ Correctly returned status {response.status_code}")
+            validation_results.append(True)
+        else:
+            print(f"❌ Expected status {test_case['expected_status']}, got {response.status_code}")
+            validation_results.append(False)
+    
+    if all(validation_results):
+        test_results["pilgrim_registration_validation"]["success"] = True
+        test_results["pilgrim_registration_validation"]["details"] = "All validation tests passed - required fields are properly validated"
+    else:
+        failed_count = len([r for r in validation_results if not r])
+        test_results["pilgrim_registration_validation"]["details"] = f"{failed_count} out of {len(validation_tests)} validation tests failed"
+
+def test_pilgrim_group_integration(admin_token):
+    """Test integration with groups"""
+    print_test_header("TEST 4: Group Integration")
+    
+    # First, get available groups
+    print("Getting available groups...")
+    response = requests.get(
+        f"{API_URL}/groups",
+        headers={"Authorization": f"Bearer {admin_token}"}
+    )
+    print_response(response)
+    
+    if response.status_code != 200:
+        test_results["pilgrim_registration_group_integration"]["details"] = "Failed to retrieve groups for testing"
+        return
+    
+    groups = response.json()
+    if not groups:
+        test_results["pilgrim_registration_group_integration"]["details"] = "No groups available for testing"
+        return
+    
+    # Use the first available group
+    test_group_id = groups[0]["id"]
+    print(f"Using group ID: {test_group_id} ({groups[0]['name']})")
+    
+    # Register pilgrim with group assignment
+    test_pilgrim_with_group = {
+        "name": "María González",
+        "email": f"maria.gonzalez.{uuid.uuid4()}@test.com",
+        "password": "testpassword123",
+        "role": "pilgrim",
+        "group_id": test_group_id
+    }
+    
+    print("Registering pilgrim with group assignment...")
+    response = requests.post(f"{API_URL}/auth/register", json=test_pilgrim_with_group)
+    print_response(response)
+    
+    if response.status_code == 200:
+        pilgrim_data = response.json()
+        
+        if pilgrim_data.get("group_id") == test_group_id:
+            print("✅ Pilgrim successfully assigned to group")
+            
+            # Verify the group now contains the pilgrim
+            print(f"\nVerifying pilgrim was added to group {test_group_id}...")
+            response = requests.get(
+                f"{API_URL}/groups/{test_group_id}",
+                headers={"Authorization": f"Bearer {admin_token}"}
+            )
+            print_response(response)
+            
+            if response.status_code == 200:
+                group_data = response.json()
+                pilgrims_in_group = group_data.get("pilgrims", [])
+                
+                # Check if our pilgrim is in the group
+                pilgrim_found = False
+                for pilgrim in pilgrims_in_group:
+                    if pilgrim.get("email") == test_pilgrim_with_group["email"]:
+                        pilgrim_found = True
+                        break
+                
+                if pilgrim_found:
+                    print("✅ Pilgrim successfully added to group's pilgrim list")
+                    test_results["pilgrim_registration_group_integration"]["success"] = True
+                    test_results["pilgrim_registration_group_integration"]["details"] = "Successfully registered pilgrim with group assignment and verified group membership"
+                else:
+                    test_results["pilgrim_registration_group_integration"]["details"] = "Pilgrim registered with group_id but not found in group's pilgrim list"
+            else:
+                test_results["pilgrim_registration_group_integration"]["details"] = f"Failed to verify group membership: {response.text}"
+        else:
+            test_results["pilgrim_registration_group_integration"]["details"] = f"Expected group_id {test_group_id}, got {pilgrim_data.get('group_id')}"
+    else:
+        test_results["pilgrim_registration_group_integration"]["details"] = f"Failed to register pilgrim with group: {response.text}"
+
+def test_pilgrim_registration_error_handling():
+    """Test error handling scenarios"""
+    print_test_header("TEST 5: Error Handling")
+    
+    # Test duplicate email registration
+    duplicate_email = f"duplicate.{uuid.uuid4()}@test.com"
+    
+    # First registration
+    first_pilgrim = {
+        "name": "First User",
+        "email": duplicate_email,
+        "password": "testpassword123",
+        "role": "pilgrim"
+    }
+    
+    print("Registering first pilgrim...")
+    response = requests.post(f"{API_URL}/auth/register", json=first_pilgrim)
+    print_response(response)
+    
+    if response.status_code == 200:
+        print("✅ First pilgrim registered successfully")
+        
+        # Attempt duplicate registration
+        second_pilgrim = {
+            "name": "Second User",
+            "email": duplicate_email,  # Same email
+            "password": "differentpassword",
+            "role": "pilgrim"
+        }
+        
+        print("\nAttempting duplicate email registration...")
+        response = requests.post(f"{API_URL}/auth/register", json=second_pilgrim)
+        print_response(response)
+        
+        if response.status_code == 400:
+            print("✅ Correctly rejected duplicate email registration")
+            
+            # Verify error message format is compatible with handleAPIError
+            try:
+                error_data = response.json()
+                if "detail" in error_data:
+                    print(f"✅ Error response has proper format: {error_data['detail']}")
+                    test_results["pilgrim_registration_error_handling"]["success"] = True
+                    test_results["pilgrim_registration_error_handling"]["details"] = "Properly handles duplicate email registration with correct error format"
+                else:
+                    test_results["pilgrim_registration_error_handling"]["details"] = "Error response missing 'detail' field for handleAPIError compatibility"
+            except:
+                test_results["pilgrim_registration_error_handling"]["details"] = "Error response is not valid JSON"
+        else:
+            test_results["pilgrim_registration_error_handling"]["details"] = f"Expected status 400 for duplicate email, got {response.status_code}"
+    else:
+        test_results["pilgrim_registration_error_handling"]["details"] = f"Failed to register first pilgrim for duplicate test: {response.text}"
 
 def test_auth_register():
     print_test_header("Authentication - Register")
