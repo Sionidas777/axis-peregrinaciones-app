@@ -8,8 +8,9 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Calendar, Plane, Plus, X } from 'lucide-react';
 
-const EditItineraryModal = ({ itinerary, onSave, onClose, isOpen }) => {
+const EditItineraryModal = ({ itinerary, onSave, onClose, isOpen, groups }) => {
   const [formData, setFormData] = useState({
+    group_id: itinerary?.group_id || '',
     group_name: itinerary?.group_name || '',
     flights: itinerary?.flights || {
       departure: { from: '', to: '', date: '', time: '', airline: '', flight_number: '' },
