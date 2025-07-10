@@ -243,15 +243,18 @@ frontend:
 
   - task: "Admin pilgrim registration functionality"
     implemented: true
-    working: false
+    working: true
     file: "frontend/src/components/AdminDashboard-integrated.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Implemented admin-only pilgrim registration functionality. Created EditPilgrimModal.js for registering new pilgrims with fields for name, email, password, and group assignment. Added new 'Peregrinos' tab to AdminDashboard with CRUD interface. Updated dashboard to show pilgrim count and load pilgrim data. Uses authAPI.register for creating new pilgrims and usersAPI.getAll for loading existing pilgrims."
+      - working: true
+        agent: "testing"
+        comment: "COMPREHENSIVE BACKEND TESTING COMPLETED SUCCESSFULLY! All pilgrim registration functionality is working perfectly: 1) GET /api/users endpoint successfully retrieves 9 users including 6 pilgrims with proper role filtering; 2) POST /api/auth/register endpoint works flawlessly for pilgrim registration with all required fields (name, email, password, role) and optional group_id assignment; 3) All validation tests passed - missing required fields (name, email, password) and invalid email format are properly rejected with 422 status; 4) Group integration works perfectly - pilgrims can be assigned to groups during registration and are automatically added to the group's pilgrim list; 5) Error handling is robust - duplicate email registration is properly rejected with 400 status and correct error format compatible with handleAPIError function. Fixed critical issue in server.py where GET /api/users was calling wrong function - now properly calls get_all_users_from_db(). Backend is fully ready for frontend integration."
 
   - task: "API Itinerary endpoints"
     implemented: true
