@@ -215,7 +215,7 @@ frontend:
     implemented: true
     working: false
     file: "frontend/src/components/AdminDashboard-integrated.js"
-    stuck_count: 1
+    stuck_count: 2
     priority: "high"
     needs_retesting: true
     status_history:
@@ -225,6 +225,12 @@ frontend:
       - working: false
         agent: "testing"
         comment: "AdminDashboard integration is incomplete. Was able to logout and switch to admin tab, but couldn't complete admin login to verify dashboard functionality. The admin login form is visible but there seems to be an issue with the login process."
+      - working: false
+        agent: "user"
+        comment: "User reports 'Objects are not valid as a React child' error when trying to save itineraries as admin"
+      - working: false
+        agent: "main"
+        comment: "Fixed field mapping inconsistencies in EditItineraryModal.js. Changed itinerary?.groupName to itinerary?.group_name, itinerary?.dailySchedule to itinerary?.daily_schedule, and itinerary?.notIncluded to itinerary?.not_included. Added useEffect to reinitialize form data when modal opens."
 
 metadata:
   created_by: "main_agent"
