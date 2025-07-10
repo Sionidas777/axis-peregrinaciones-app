@@ -20,6 +20,10 @@ const Login = ({ onLogin }) => {
     try {
       // BYPASS TEMPORAL PARA ADMIN
       if (email === 'admin@test.com' && password === 'test123') {
+        // Crear token admin temporal
+        const adminToken = 'admin-bypass-token-' + Date.now();
+        localStorage.setItem('token', adminToken);
+        
         // Crear usuario admin temporal
         const adminUser = {
           id: 'admin-temp-001',
