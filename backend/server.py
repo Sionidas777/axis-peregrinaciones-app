@@ -349,7 +349,7 @@ async def delete_user(user_id: str, current_user: User = Depends(get_current_adm
             print(f"Warning: Could not remove pilgrim from group: {e}")
     
     # Delete the user
-    success = await delete_user_from_db(user_id)
+    success = await delete_user(user_id)
     if not success:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
