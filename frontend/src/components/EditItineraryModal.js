@@ -166,6 +166,8 @@ const EditItineraryModal = ({ itinerary, onSave, onClose, isOpen, groups }) => {
 
   const handleSave = async () => {
     setIsLoading(true);
+    setError('');
+    
     try {
       if (onSave) {
         await onSave(formData);
@@ -175,7 +177,10 @@ const EditItineraryModal = ({ itinerary, onSave, onClose, isOpen, groups }) => {
       }
     } catch (error) {
       console.error('Error al guardar itinerario:', error);
-      alert('Error al guardar el itinerario. Por favor, inténtalo de nuevo.');
+      // Import the error handler from api.js
+      const { handleAPIError } = await import('../services/api');
+      const errorMessage = handleAPIError(error);
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
