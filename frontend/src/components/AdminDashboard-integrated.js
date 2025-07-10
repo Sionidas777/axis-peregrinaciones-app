@@ -38,11 +38,13 @@ const AdminDashboard = ({ user, onLogout }) => {
   const [itineraries, setItineraries] = useState([]);
   const [destinations, setDestinations] = useState([]);
   const [spiritualContent, setSpiritualContent] = useState([]);
+  const [pilgrims, setPilgrims] = useState([]);
 
   // Modal states
   const [editGroupModal, setEditGroupModal] = useState({ isOpen: false, group: null });
   const [editItineraryModal, setEditItineraryModal] = useState({ isOpen: false, itinerary: null });
   const [editDestinationModal, setEditDestinationModal] = useState({ isOpen: false, destination: null });
+  const [editPilgrimModal, setEditPilgrimModal] = useState({ isOpen: false, pilgrim: null });
 
   useEffect(() => {
     loadAdminData();
