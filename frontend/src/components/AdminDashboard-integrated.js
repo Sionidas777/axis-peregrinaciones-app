@@ -207,16 +207,15 @@ const AdminDashboard = ({ user, onLogout }) => {
   const handleSavePilgrim = async (pilgrimData) => {
     try {
       if (editPilgrimModal.pilgrim) {
-        // Update existing pilgrim - this would need a specific update endpoint
-        // For now, we'll refresh the data
-        await loadAdminData();
+        // Update existing pilgrim
+        await usersAPI.update(editPilgrimModal.pilgrim.id, pilgrimData);
       } else {
         // Create new pilgrim using the register endpoint
         await authAPI.register(pilgrimData);
-        // Refresh pilgrims data
-        const pilgrimsData = await usersAPI.getAll();
-        setPilgrims(pilgrimsData.filter(user => user.role === 'pilgrim'));
       }
+      // Refresh pilgrims data
+      const pilgrimsData = await usersAPI.getAll();
+      setPilgrims(pilgrimsData.filter(user => user.role === 'pilgrim'));
       setEditPilgrimModal({ isOpen: false, pilgrim: null });
     } catch (error) {
       console.error('Error saving pilgrim:', error);
