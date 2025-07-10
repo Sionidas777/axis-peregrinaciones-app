@@ -292,8 +292,15 @@ async def delete_spiritual_content_endpoint(content_id: str, current_user: User 
 @api_router.get("/users", response_model=List[UserResponse])
 async def get_all_users(current_user: User = Depends(get_current_admin)):
     """Get all users (admin only)"""
-    users = await get_all_pilgrimage_groups()  # This will be implemented
-    return users
+    users = await get_all_users_from_db()
+    return [UserResponse(
+        id=user.id,
+        email=user.email,
+        name=user.name,
+        role=user.role,
+        group_id=user.group_id,
+        created_at=user.created_at
+    ) for user in users]
 
 @api_router.get("/users/group/{group_id}", response_model=List[UserResponse])
 async def get_users_by_group(group_id: str, current_user: User = Depends(get_current_user)):
