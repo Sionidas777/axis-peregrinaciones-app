@@ -258,12 +258,12 @@ async def initialize_database():
     
     print("Initializing database with sample data...")
     
-    # Create sample admin user
+    # Create specific admin user with provided credentials
     from .auth import get_password_hash
     admin_data = UserCreate(
-        email="admin@pilgrimageapp.com",
-        password="admin123",
-        name="Father Michael",
+        email="julian.alcalde@axisperegrinaciones.com",
+        password="Peregrina7'7$$$%%%",
+        name="Julian Alcalde",
         role=UserRole.ADMIN
     )
     admin_password_hash = get_password_hash(admin_data.password)
