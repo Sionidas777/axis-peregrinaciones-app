@@ -122,10 +122,9 @@ async def remove_pilgrim_from_group(group_id: str, pilgrim_id: str) -> Optional[
 
 # Itinerary Database Operations
 async def create_itinerary(itinerary_data: ItineraryCreate) -> Itinerary:
-    # Convert ItineraryCreate to dict and then create Itinerary
-    # This handles the alias conversion properly
-    itinerary_dict = itinerary_data.dict()
-    itinerary = Itinerary(**itinerary_dict)
+    # Convert ItineraryCreate to dict using aliases, then create Itinerary
+    itinerary_dict = itinerary_data.dict(by_alias=True)
+    itinerary = Itinerary.parse_obj(itinerary_dict)
     await itineraries_collection.insert_one(itinerary.dict())
     return itinerary
 
