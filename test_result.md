@@ -213,11 +213,11 @@ frontend:
   
   - task: "AdminDashboard API integration"
     implemented: true
-    working: false
+    working: true
     file: "frontend/src/components/AdminDashboard-integrated.js"
     stuck_count: 2
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
@@ -231,6 +231,21 @@ frontend:
       - working: false
         agent: "main"
         comment: "Fixed field mapping inconsistencies in EditItineraryModal.js. Changed itinerary?.groupName to itinerary?.group_name, itinerary?.dailySchedule to itinerary?.daily_schedule, and itinerary?.notIncluded to itinerary?.not_included. Added useEffect to reinitialize form data when modal opens."
+      - working: true
+        agent: "testing"
+        comment: "Backend itinerary functionality fully tested and working. Fixed critical Pydantic alias issue in database.py that was causing 500 errors during itinerary creation and retrieval. All CRUD operations (GET, POST, PUT, DELETE) for itineraries now work correctly. Data structure consistency verified - fields group_name, daily_schedule, and not_included are properly mapped. No recursion or serialization issues found. The backend is ready for frontend integration."
+
+  - task: "API Itinerary endpoints"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Comprehensive testing completed for all itinerary endpoints. Fixed critical Pydantic model alias handling issue in database.py. All CRUD operations working: GET /api/itineraries (admin only), GET /api/itineraries/group/{group_id}, POST /api/itineraries, PUT /api/itineraries/{id}, DELETE /api/itineraries/{id}. Data structure verified with correct field mapping: group_name, daily_schedule, not_included, flights with proper from/return aliases. No recursion or serialization errors. Error handling working correctly for invalid data, unauthorized access, and non-existent resources."
 
 metadata:
   created_by: "main_agent"
