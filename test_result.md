@@ -276,7 +276,6 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Admin pilgrim registration functionality"
     - "Complete admin dashboard functionality"
   stuck_tasks: []
   test_all: false
