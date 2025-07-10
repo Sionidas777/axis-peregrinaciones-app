@@ -125,7 +125,8 @@ async def create_itinerary(itinerary_data: ItineraryCreate) -> Itinerary:
     # Convert ItineraryCreate to dict using aliases, then create Itinerary
     itinerary_dict = itinerary_data.dict(by_alias=True)
     itinerary = Itinerary.parse_obj(itinerary_dict)
-    await itineraries_collection.insert_one(itinerary.dict())
+    # Store in MongoDB using aliases so retrieval works correctly
+    await itineraries_collection.insert_one(itinerary.dict(by_alias=True))
     return itinerary
 
 async def get_itinerary_by_id(itinerary_id: str) -> Optional[Itinerary]:
