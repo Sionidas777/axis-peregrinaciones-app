@@ -200,6 +200,11 @@ export const usersAPI = {
     const response = await api.get(`/users/group/${groupId}`);
     return response.data;
   },
+
+  delete: async (userId) => {
+    const response = await api.delete(`/users/${userId}`);
+    return response.data;
+  },
 };
 
 // Error handling utility
