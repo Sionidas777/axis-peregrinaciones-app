@@ -12,12 +12,18 @@ const api = axios.create({
 });
 
 // Token management
-const TOKEN_KEY = 'pilgrimage_token';
+const TOKEN_KEY = 'token'; // Cambiar para que coincida con el frontend
 
 export const tokenManager = {
-  getToken: () => localStorage.getItem(TOKEN_KEY),
-  setToken: (token) => localStorage.setItem(TOKEN_KEY, token),
-  removeToken: () => localStorage.removeItem(TOKEN_KEY),
+  getToken: () => localStorage.getItem(TOKEN_KEY) || localStorage.getItem('pilgrimage_token'),
+  setToken: (token) => {
+    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem('pilgrimage_token', token); // Mantener ambos por compatibilidad
+  },
+  removeToken: () => {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem('pilgrimage_token');
+  },
 };
 
 // Request interceptor to add token to requests
