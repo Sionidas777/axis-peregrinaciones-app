@@ -149,7 +149,7 @@ async def get_all_itineraries() -> List[Itinerary]:
     return itineraries
 
 async def update_itinerary(itinerary_id: str, update_data: ItineraryUpdate) -> Optional[Itinerary]:
-    update_dict = {k: v for k, v in update_data.dict().items() if v is not None}
+    update_dict = {k: v for k, v in update_data.dict(by_alias=True).items() if v is not None}
     update_dict["updated_at"] = datetime.utcnow()
     
     result = await itineraries_collection.update_one(
