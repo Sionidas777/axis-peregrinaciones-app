@@ -208,14 +208,41 @@ const EditItineraryModal = ({ itinerary, onSave, onClose, isOpen, groups }) => {
                   <CardTitle>Información Básica</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-2">
-                    <Label htmlFor="group_name">Nombre del Grupo</Label>
-                    <Input
-                      id="group_name"
-                      value={formData.group_name}
-                      onChange={(e) => handleInputChange('group_name', e.target.value)}
-                      placeholder="Nombre del grupo de peregrinación"
-                    />
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="group_id">Grupo</Label>
+                      <select
+                        id="group_id"
+                        value={formData.group_id}
+                        onChange={(e) => {
+                          const selectedGroup = groups?.find(g => g.id === e.target.value);
+                          setFormData(prev => ({
+                            ...prev,
+                            group_id: e.target.value,
+                            group_name: selectedGroup?.name || ''
+                          }));
+                        }}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        required
+                      >
+                        <option value="">Selecciona un grupo</option>
+                        {groups?.map(group => (
+                          <option key={group.id} value={group.id}>
+                            {group.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="group_name">Nombre del Grupo</Label>
+                      <Input
+                        id="group_name"
+                        value={formData.group_name}
+                        onChange={(e) => handleInputChange('group_name', e.target.value)}
+                        placeholder="Nombre del grupo de peregrinación"
+                        readOnly={formData.group_id}
+                      />
+                    </div>
                   </div>
                 </CardContent>
               </Card>
