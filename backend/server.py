@@ -66,8 +66,19 @@ async def register(user_data: UserCreate):
 @api_router.post("/auth/login", response_model=Token)
 async def login(user_credentials: UserLogin):
     """Login user and return access token"""
+    print(f"DEBUG: Login attempt for email: {user_credentials.email}")
+    
     user = await get_user_by_email(user_credentials.email)
+    print(f"DEBUG: User found: {user is not None}")
+    
+    if user:
+        print(f"DEBUG: User role: {user.role}")
+        print(f"DEBUG: User name: {user.name}")
+        password_valid = verify_password(user_credentials.password, user.password_hash)
+        print(f"DEBUG: Password valid: {password_valid}")
+    
     if not user or not verify_password(user_credentials.password, user.password_hash):
+        print(f"DEBUG: Login failed - user: {user is not None}, password_valid: {password_valid if user else 'N/A'}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
