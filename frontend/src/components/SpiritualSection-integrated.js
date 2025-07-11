@@ -15,19 +15,57 @@ import {
 } from 'lucide-react';
 
 const SpiritualSection = ({ spiritualContent }) => {
-  // Organize spiritual content by category
+  // Organize spiritual content by category and title
   const organizeSpiritualContent = () => {
     const organized = {
-      rosary: null,
-      angelus: null,
-      morning_prayer: null,
-      evening_prayer: null,
-      pilgrim_prayer: null
+      devotion: [],
+      daily: [],
+      pilgrimage: []
     };
 
     if (spiritualContent) {
       spiritualContent.forEach(item => {
-        organized[item.category] = item;
+        if (organized[item.category]) {
+          organized[item.category].push(item);
+        }
+      });
+    }
+
+    return organized;
+  };
+
+  const content = organizeSpiritualContent();
+  const [openSections, setOpenSections] = useState({});
+
+  const toggleSection = (sectionId) => {
+    setOpenSections(prev => ({
+      ...prev,
+      [sectionId]: !prev[sectionId]
+    }));
+  };
+
+  const formatContent = (contentText) => {
+    // Convert markdown-style formatting to JSX
+    return contentText
+      .split('\n')
+      .map((line, index) => {
+        if (line.startsWith('## ')) {
+          return <h3 key={index} className="text-lg font-semibold text-blue-800 mt-4 mb-2">{line.replace('## ', '')}</h3>;
+        } else if (line.startsWith('**') && line.endsWith('**')) {
+          return <p key={index} className="font-semibold text-gray-800 mt-3 mb-1">{line.replace(/\*\*/g, '')}</p>;
+        } else if (line.startsWith('*') && line.endsWith('*')) {
+          return <p key={index} className="italic text-gray-600 text-center my-2">{line.replace(/\*/g, '')}</p>;
+        } else if (line.trim().match(/^\d+\./)) {
+          return <p key={index} className="ml-4 my-1 text-gray-700">{line}</p>;
+        } else if (line.startsWith('V.') || line.startsWith('R.')) {
+          return <p key={index} className="my-1 text-gray-800">{line}</p>;
+        } else if (line.trim() === '') {
+          return <br key={index} />;
+        } else {
+          return <p key={index} className="my-1 text-gray-700 leading-relaxed">{line}</p>;
+        }
+      });
+  };
       });
     }
 
