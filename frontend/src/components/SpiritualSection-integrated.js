@@ -46,13 +46,13 @@ const SpiritualSection = ({ spiritualContent }) => {
         }
       });
   };
-      });
-    }
 
-    return organized;
+  // Organize content by category
+  const organizedContent = {
+    devotion: spiritualContent?.filter(item => item.category === 'devotion') || [],
+    daily: spiritualContent?.filter(item => item.category === 'daily') || [],
+    pilgrimage: spiritualContent?.filter(item => item.category === 'pilgrimage') || []
   };
-
-  const organizedContent = organizeSpiritualContent();
 
   const getCategoryIcon = (category) => {
     switch (category) {
