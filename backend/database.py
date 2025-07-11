@@ -231,13 +231,11 @@ async def get_all_spiritual_content() -> List[SpiritualContent]:
     contents = []
     async for content_doc in cursor:
         try:
-            print(f"DEBUG: Procesando documento: {content_doc.get('title', 'Sin título')}")
             content = SpiritualContent(**content_doc)
             contents.append(content)
         except Exception as e:
-            print(f"DEBUG: Error procesando documento: {e}")
-            print(f"DEBUG: Documento problemático: {content_doc}")
-    print(f"DEBUG: Total contenidos procesados: {len(contents)}")
+            # Log error but continue processing
+            print(f"Error processing spiritual content document: {e}")
     return contents
 
 async def update_spiritual_content(content_id: str, update_data: SpiritualContentUpdate) -> Optional[SpiritualContent]:
