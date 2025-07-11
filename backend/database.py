@@ -82,11 +82,19 @@ async def create_pilgrimage_group(group_data: PilgrimageGroupCreate) -> Pilgrima
     return group
 
 async def get_pilgrimage_group_by_id(group_id: str) -> Optional[PilgrimageGroup]:
+    print(f"DEBUG: Searching for group with id: {group_id}")
     group_doc = await groups_collection.find_one({"id": group_id})
+    print(f"DEBUG: Found group_doc: {group_doc}")
     if group_doc:
         # Remove MongoDB's _id field
         group_doc.pop('_id', None)
-        return PilgrimageGroup(**group_doc)
+        try:
+            group = PilgrimageGroup(**group_doc)
+            print(f"DEBUG: Successfully created PilgrimageGroup: {group.id}")
+            return group
+        except Exception as e:
+            print(f"DEBUG: Error creating PilgrimageGroup: {e}")
+            return None
     return None
 
 async def get_all_pilgrimage_groups() -> List[PilgrimageGroup]:
