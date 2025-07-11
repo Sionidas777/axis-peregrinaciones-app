@@ -174,24 +174,24 @@ class RosaryMystery(BaseModel):
 
 class SpiritualContent(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    category: str  # liturgy_of_hours, rosary, daily_prayers
     title: str
-    description: str
-    content: Dict[str, Any]
+    type: str  # prayer, reading, meditation
+    content: str  # Changed from Dict to str
+    category: str  # devotion, daily, pilgrimage, liturgy
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
 class SpiritualContentCreate(BaseModel):
-    category: str
     title: str
-    description: str
-    content: Dict[str, Any]
+    type: str
+    content: str  # Changed from Dict to str
+    category: str
 
 class SpiritualContentUpdate(BaseModel):
-    category: Optional[str] = None
     title: Optional[str] = None
-    description: Optional[str] = None
-    content: Optional[Dict[str, Any]] = None
+    type: Optional[str] = None
+    content: Optional[str] = None  # Changed from Dict to str
+    category: Optional[str] = None
 
 # Authentication Models
 class Token(BaseModel):
