@@ -84,6 +84,8 @@ async def create_pilgrimage_group(group_data: PilgrimageGroupCreate) -> Pilgrima
 async def get_pilgrimage_group_by_id(group_id: str) -> Optional[PilgrimageGroup]:
     group_doc = await groups_collection.find_one({"id": group_id})
     if group_doc:
+        # Remove MongoDB's _id field
+        group_doc.pop('_id', None)
         return PilgrimageGroup(**group_doc)
     return None
 
