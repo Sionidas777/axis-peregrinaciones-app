@@ -93,6 +93,8 @@ async def get_all_pilgrimage_groups() -> List[PilgrimageGroup]:
     cursor = groups_collection.find({})
     groups = []
     async for group_doc in cursor:
+        # Remove MongoDB's _id field
+        group_doc.pop('_id', None)
         groups.append(PilgrimageGroup(**group_doc))
     return groups
 
