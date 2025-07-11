@@ -15,26 +15,6 @@ import {
 } from 'lucide-react';
 
 const SpiritualSection = ({ spiritualContent }) => {
-  // Organize spiritual content by category and title
-  const organizeSpiritualContent = () => {
-    const organized = {
-      devotion: [],
-      daily: [],
-      pilgrimage: []
-    };
-
-    if (spiritualContent) {
-      spiritualContent.forEach(item => {
-        if (organized[item.category]) {
-          organized[item.category].push(item);
-        }
-      });
-    }
-
-    return organized;
-  };
-
-  const content = organizeSpiritualContent();
   const [openSections, setOpenSections] = useState({});
 
   const toggleSection = (sectionId) => {
