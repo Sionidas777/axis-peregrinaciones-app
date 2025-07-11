@@ -152,9 +152,309 @@ def print_response(response):
     except:
         print(f"Response: {response.text}")
 
+def test_spiritual_content_endpoints():
+    """
+    Comprehensive test for spiritual content API endpoints
+    Tests the specific data structure issues mentioned in the review request
+    """
+    print_test_header("SPIRITUAL CONTENT API ENDPOINTS - DATA STRUCTURE ANALYSIS")
+    
+    # Step 1: Test GET /api/spiritual-content endpoint
+    test_get_all_spiritual_content()
+    
+    # Step 2: Analyze data structure and categories
+    analyze_spiritual_content_data_structure()
+    
+    # Step 3: Test category-specific endpoints
+    test_spiritual_content_by_category()
+    
+    # Step 4: Analyze format issues (dict vs string, category mismatches)
+    analyze_spiritual_content_format_issues()
+
+def test_get_all_spiritual_content():
+    """Test GET /api/spiritual-content endpoint to see actual data structure"""
+    print_test_header("TEST 1: GET /api/spiritual-content Endpoint")
+    
+    print("Testing GET /api/spiritual-content endpoint...")
+    response = requests.get(f"{API_URL}/spiritual-content")
+    print_response(response)
+    
+    if response.status_code == 200:
+        try:
+            spiritual_content = response.json()
+            if isinstance(spiritual_content, list):
+                print(f"✅ Successfully retrieved {len(spiritual_content)} spiritual content items")
+                
+                # Store the data for further analysis
+                global spiritual_content_data
+                spiritual_content_data = spiritual_content
+                
+                # Print sample data structure
+                if spiritual_content:
+                    print("\n📋 SAMPLE DATA STRUCTURE:")
+                    sample_item = spiritual_content[0]
+                    print(json.dumps(sample_item, indent=2, ensure_ascii=False))
+                    
+                    # Analyze categories found
+                    categories_found = set()
+                    for item in spiritual_content:
+                        if 'category' in item:
+                            categories_found.add(item['category'])
+                    
+                    print(f"\n📂 CATEGORIES FOUND: {list(categories_found)}")
+                    
+                test_results["spiritual_content_get_all"]["success"] = True
+                test_results["spiritual_content_get_all"]["details"] = f"Successfully retrieved {len(spiritual_content)} spiritual content items with categories: {list(categories_found) if spiritual_content else 'none'}"
+            else:
+                test_results["spiritual_content_get_all"]["details"] = f"Expected list but got: {type(spiritual_content)}"
+        except Exception as e:
+            test_results["spiritual_content_get_all"]["details"] = f"Error parsing response: {str(e)}"
+    else:
+        test_results["spiritual_content_get_all"]["details"] = f"Failed with status {response.status_code}: {response.text}"
+
+def analyze_spiritual_content_data_structure():
+    """Analyze the data structure of spiritual content"""
+    print_test_header("TEST 2: Data Structure Analysis")
+    
+    if not hasattr(analyze_spiritual_content_data_structure, 'spiritual_content_data') and 'spiritual_content_data' not in globals():
+        test_results["spiritual_content_data_structure"]["details"] = "No spiritual content data available for analysis"
+        return
+    
+    try:
+        spiritual_content = globals().get('spiritual_content_data', [])
+        
+        if not spiritual_content:
+            test_results["spiritual_content_data_structure"]["details"] = "No spiritual content items found in database"
+            return
+        
+        print("🔍 ANALYZING DATA STRUCTURE...")
+        
+        # Analyze each item's structure
+        structure_analysis = {
+            "total_items": len(spiritual_content),
+            "field_types": {},
+            "content_formats": {},
+            "category_distribution": {}
+        }
+        
+        for item in spiritual_content:
+            # Analyze field types
+            for field, value in item.items():
+                field_type = type(value).__name__
+                if field not in structure_analysis["field_types"]:
+                    structure_analysis["field_types"][field] = {}
+                if field_type not in structure_analysis["field_types"][field]:
+                    structure_analysis["field_types"][field][field_type] = 0
+                structure_analysis["field_types"][field][field_type] += 1
+            
+            # Analyze content field specifically
+            if 'content' in item:
+                content_type = type(item['content']).__name__
+                if content_type not in structure_analysis["content_formats"]:
+                    structure_analysis["content_formats"][content_type] = 0
+                structure_analysis["content_formats"][content_type] += 1
+                
+                # If content is dict, analyze its structure
+                if isinstance(item['content'], dict):
+                    print(f"\n📄 DICT CONTENT STRUCTURE for {item.get('title', 'Unknown')}:")
+                    print(json.dumps(item['content'], indent=2, ensure_ascii=False))
+            
+            # Analyze categories
+            if 'category' in item:
+                category = item['category']
+                if category not in structure_analysis["category_distribution"]:
+                    structure_analysis["category_distribution"][category] = 0
+                structure_analysis["category_distribution"][category] += 1
+        
+        print("\n📊 STRUCTURE ANALYSIS RESULTS:")
+        print(json.dumps(structure_analysis, indent=2, ensure_ascii=False))
+        
+        # Check for suspected issues
+        issues_found = []
+        
+        # Issue 1: Content stored as dict instead of string
+        if 'dict' in structure_analysis["content_formats"]:
+            issues_found.append(f"ISSUE: {structure_analysis['content_formats']['dict']} items have content stored as dict instead of string")
+        
+        # Issue 2: Category mismatch with frontend expectations
+        expected_categories = {"devotion", "daily", "pilgrimage"}
+        actual_categories = set(structure_analysis["category_distribution"].keys())
+        category_mismatch = actual_categories - expected_categories
+        if category_mismatch:
+            issues_found.append(f"ISSUE: Categories {category_mismatch} don't match frontend expectations {expected_categories}")
+        
+        if issues_found:
+            print("\n🚨 ISSUES IDENTIFIED:")
+            for issue in issues_found:
+                print(f"  - {issue}")
+            test_results["spiritual_content_data_structure"]["success"] = False
+            test_results["spiritual_content_data_structure"]["details"] = f"Data structure issues found: {'; '.join(issues_found)}"
+        else:
+            print("\n✅ No major data structure issues found")
+            test_results["spiritual_content_data_structure"]["success"] = True
+            test_results["spiritual_content_data_structure"]["details"] = "Data structure analysis completed - no major issues found"
+            
+    except Exception as e:
+        test_results["spiritual_content_data_structure"]["details"] = f"Error during data structure analysis: {str(e)}"
+
+def test_spiritual_content_by_category():
+    """Test category-specific endpoints"""
+    print_test_header("TEST 3: Category-Specific Endpoints")
+    
+    # Get the categories from previous analysis
+    spiritual_content = globals().get('spiritual_content_data', [])
+    if not spiritual_content:
+        test_results["spiritual_content_by_category"]["details"] = "No spiritual content data available for category testing"
+        return
+    
+    categories_found = set()
+    for item in spiritual_content:
+        if 'category' in item:
+            categories_found.add(item['category'])
+    
+    if not categories_found:
+        test_results["spiritual_content_by_category"]["details"] = "No categories found in spiritual content data"
+        return
+    
+    print(f"Testing category endpoints for categories: {list(categories_found)}")
+    
+    category_test_results = []
+    
+    for category in categories_found:
+        print(f"\n🔍 Testing category: {category}")
+        response = requests.get(f"{API_URL}/spiritual-content/category/{category}")
+        print_response(response)
+        
+        if response.status_code == 200:
+            try:
+                category_content = response.json()
+                if isinstance(category_content, list):
+                    print(f"✅ Retrieved {len(category_content)} items for category '{category}'")
+                    
+                    # Verify all items belong to this category
+                    category_mismatch = False
+                    for item in category_content:
+                        if item.get('category') != category:
+                            category_mismatch = True
+                            print(f"❌ Item {item.get('title', 'Unknown')} has category {item.get('category')} but was returned for category {category}")
+                    
+                    if not category_mismatch:
+                        print(f"✅ All items correctly belong to category '{category}'")
+                        category_test_results.append(True)
+                    else:
+                        category_test_results.append(False)
+                else:
+                    print(f"❌ Expected list but got {type(category_content)}")
+                    category_test_results.append(False)
+            except Exception as e:
+                print(f"❌ Error parsing response: {str(e)}")
+                category_test_results.append(False)
+        else:
+            print(f"❌ Failed with status {response.status_code}")
+            category_test_results.append(False)
+    
+    if all(category_test_results):
+        test_results["spiritual_content_by_category"]["success"] = True
+        test_results["spiritual_content_by_category"]["details"] = f"All category endpoints working correctly for categories: {list(categories_found)}"
+    else:
+        failed_count = len([r for r in category_test_results if not r])
+        test_results["spiritual_content_by_category"]["details"] = f"{failed_count} out of {len(categories_found)} category endpoints failed"
+
+def analyze_spiritual_content_format_issues():
+    """Analyze specific format issues mentioned in the review request"""
+    print_test_header("TEST 4: Format Issues Analysis")
+    
+    spiritual_content = globals().get('spiritual_content_data', [])
+    if not spiritual_content:
+        test_results["spiritual_content_format_analysis"]["details"] = "No spiritual content data available for format analysis"
+        return
+    
+    print("🔍 ANALYZING FORMAT ISSUES...")
+    
+    format_issues = {
+        "content_as_dict": [],
+        "category_mismatches": [],
+        "missing_fields": [],
+        "data_inconsistencies": []
+    }
+    
+    expected_frontend_categories = {"devotion", "daily", "pilgrimage"}
+    
+    for i, item in enumerate(spiritual_content):
+        item_id = item.get('id', f'item_{i}')
+        item_title = item.get('title', 'Unknown')
+        
+        # Check if content is stored as dict instead of string
+        if 'content' in item and isinstance(item['content'], dict):
+            format_issues["content_as_dict"].append({
+                "id": item_id,
+                "title": item_title,
+                "content_keys": list(item['content'].keys()) if isinstance(item['content'], dict) else None
+            })
+        
+        # Check category mismatches
+        if 'category' in item:
+            category = item['category']
+            if category not in expected_frontend_categories:
+                format_issues["category_mismatches"].append({
+                    "id": item_id,
+                    "title": item_title,
+                    "actual_category": category,
+                    "expected_categories": list(expected_frontend_categories)
+                })
+        
+        # Check for missing essential fields
+        essential_fields = ['id', 'title', 'content', 'category']
+        missing = [field for field in essential_fields if field not in item]
+        if missing:
+            format_issues["missing_fields"].append({
+                "id": item_id,
+                "title": item_title,
+                "missing_fields": missing
+            })
+    
+    print("\n📋 FORMAT ISSUES ANALYSIS:")
+    print(json.dumps(format_issues, indent=2, ensure_ascii=False))
+    
+    # Summarize issues
+    issues_summary = []
+    
+    if format_issues["content_as_dict"]:
+        issues_summary.append(f"{len(format_issues['content_as_dict'])} items have content stored as dict instead of string")
+    
+    if format_issues["category_mismatches"]:
+        actual_categories = set(item["actual_category"] for item in format_issues["category_mismatches"])
+        issues_summary.append(f"Categories {actual_categories} don't match frontend expectations {expected_frontend_categories}")
+    
+    if format_issues["missing_fields"]:
+        issues_summary.append(f"{len(format_issues['missing_fields'])} items have missing essential fields")
+    
+    if issues_summary:
+        print("\n🚨 FORMAT ISSUES IDENTIFIED:")
+        for issue in issues_summary:
+            print(f"  - {issue}")
+        
+        # Provide specific recommendations
+        print("\n💡 RECOMMENDATIONS:")
+        if format_issues["content_as_dict"]:
+            print("  - Convert dict content to string format for frontend compatibility")
+        if format_issues["category_mismatches"]:
+            print("  - Map backend categories to frontend categories:")
+            print("    - 'angelus' → 'devotion'")
+            print("    - 'morning_prayer' → 'daily'") 
+            print("    - 'evening_prayer' → 'daily'")
+            print("    - 'pilgrim_prayer' → 'pilgrimage'")
+        
+        test_results["spiritual_content_format_analysis"]["success"] = False
+        test_results["spiritual_content_format_analysis"]["details"] = f"Format issues identified: {'; '.join(issues_summary)}"
+    else:
+        print("\n✅ No format issues found")
+        test_results["spiritual_content_format_analysis"]["success"] = True
+        test_results["spiritual_content_format_analysis"]["details"] = "No format issues found - data structure is compatible with frontend expectations"
+
 def run_tests():
-    # Focus on pilgrim registration functionality as requested
-    test_pilgrim_registration_functionality()
+    # Focus on spiritual content API endpoints as requested in the review
+    test_spiritual_content_endpoints()
     
     # Print summary
     print_test_summary()
