@@ -113,6 +113,10 @@ async def get_all_groups(current_user: User = Depends(get_current_admin)):
 @api_router.get("/groups/{group_id}", response_model=PilgrimageGroup)
 async def get_group(group_id: str, current_user: User = Depends(get_current_user)):
     """Get specific pilgrimage group"""
+    # Debug: print the group_id and user info
+    print(f"DEBUG: Looking for group_id: {group_id}")
+    print(f"DEBUG: Current user: {current_user.email}, group_id: {current_user.group_id}")
+    
     # Pilgrims can only access their own group
     if current_user.role == UserRole.PILGRIM and current_user.group_id != group_id:
         raise HTTPException(
@@ -121,6 +125,7 @@ async def get_group(group_id: str, current_user: User = Depends(get_current_user
         )
     
     group = await get_pilgrimage_group_by_id(group_id)
+    print(f"DEBUG: Retrieved group: {group}")
     if not group:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
