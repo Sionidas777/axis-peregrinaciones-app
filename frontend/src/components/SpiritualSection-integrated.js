@@ -56,18 +56,14 @@ const SpiritualSection = ({ spiritualContent }) => {
 
   const getCategoryIcon = (category) => {
     switch (category) {
-      case 'rosary':
+      case 'devotion':
         return <Star className="w-5 h-5 text-blue-600" />;
-      case 'angelus':
+      case 'daily':
         return <Sun className="w-5 h-5 text-yellow-600" />;
-      case 'morning_prayer':
-        return <Sun className="w-5 h-5 text-orange-600" />;
-      case 'evening_prayer':
-        return <Moon className="w-5 h-5 text-purple-600" />;
-      case 'pilgrim_prayer':
+      case 'pilgrimage':
         return <MapPin className="w-5 h-5 text-green-600" />;
       default:
-        return <Book className="w-5 h-5 text-gray-600" />;
+        return <Cross className="w-5 h-5 text-purple-600" />;
     }
   };
 
