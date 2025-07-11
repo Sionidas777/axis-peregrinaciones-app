@@ -128,13 +128,13 @@ created_ids = {
     "itinerary_id": None
 }
 
-# Test results for pilgrim registration functionality
+# Test results for spiritual content functionality
 test_results = {
-    "pilgrim_registration_get_users": {"success": False, "details": ""},
-    "pilgrim_registration_register": {"success": False, "details": ""},
-    "pilgrim_registration_validation": {"success": False, "details": ""},
-    "pilgrim_registration_group_integration": {"success": False, "details": ""},
-    "pilgrim_registration_error_handling": {"success": False, "details": ""}
+    "spiritual_content_get_all": {"success": False, "details": ""},
+    "spiritual_content_data_structure": {"success": False, "details": ""},
+    "spiritual_content_categories": {"success": False, "details": ""},
+    "spiritual_content_by_category": {"success": False, "details": ""},
+    "spiritual_content_format_analysis": {"success": False, "details": ""}
 }
 
 def print_separator():
